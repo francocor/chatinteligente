@@ -383,15 +383,15 @@ Para una solución enterprise gestionada, contáctanos para una cotización pers
 
 ## 📞Contacto
 
-- 📧 Email: contacto@clinicasanjuan.cl
-- 🌐 Web: https://clinicasanjuan.cl
-- 📱 WhatsApp: +56 9 1234 5678
+- 📧 Email: Francocornejoc15@gmail.com
+- 🌐 Web: https://nuevo-porfolio-eger.vercel.app/
+- 📱 WhatsApp: +543816348569
 
 ---
 
 <div align="center">
 
-** Construido con ❤️ por el equipo de Clínica San Juan **
+** Construido por Franco Cornejo **
 
 *© 2026 Plataforma de Atención Inteligente. Todos los derechos reservados.*
 
