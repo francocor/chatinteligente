@@ -1,0 +1,367 @@
+// ===========================================================
+// WHATSAPP CLOUD API INTEGRATION
+// Schema Extension - Append to main schema
+// ===========================================================
+
+// ===========================================================
+// WHATSAPP CONFIGURATION
+// ===========================================================
+
+model WhatsAppConfig {
+  id                    String    @id @default(uuid())
+  tenantId              String
+  tenant                Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // WhatsApp Business API identifiers
+  phoneNumberId         String
+  businessAccountId     String
+  phoneNumber          String
+  businessName         String
+  
+  // Credentials (encrypted)
+  accessToken          String
+  accessTokenEncrypted Boolean @default(true)
+  accessTokenExpiresAt DateTime?
+  
+  // Webhook security
+  webhookVerifyToken   String
+  webhookSecret       String
+  
+  // Status
+  isActive            Boolean   @default(false)
+  isVerified         Boolean   @default(false)
+  lastSyncAt         DateTime?
+  
+  // Usage stats
+  messagesReceived    Int      @default(0)
+  messagesSent        Int      @default(0)
+  conversationsCount  Int      @default(0)
+  
+  // Configuration
+  config              Json     @default("{}")
+  
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@unique([tenantId])
+  @@index([tenantId])
+  @@index([phoneNumberId])
+}
+
+// ===========================================================
+// WHATSAPP MESSAGES
+// ===========================================================
+
+model WhatsAppMessage {
+  id              String                  @id @default(uuid())
+  tenantId        String
+  tenant          Tenant                  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // WhatsApp identifiers
+  wamid           String
+  conversationId String?
+  conversation   Conversation?           @relation(fields: [conversationId], references: [id])
+  
+  // Phone numbers
+  from            String
+  to              String
+  
+  // Message details
+  direction       MessageDirection
+  type            WhatsAppMessageType     @default(TEXT)
+  contentType     MessageContentType      @default(TEXT)
+  
+  // Content
+  text            String?
+  mediaId         String?
+  mediaUrl        String?
+  mediaType       String?
+  mediaMimeType   String?
+  mediaCaption    String?
+  
+  // Interactive
+  interactiveType String?
+  interactivePayload Json?
+  
+  // Context (replies)
+  contextWamid    String?
+  
+  // Reaction
+  reactionEmoji   String?
+  reactionWamid   String?
+  
+  // Status
+  status          WhatsAppMessageStatus   @default(PENDING)
+  error           String?
+  errorCode       Int?
+  
+  // Timestamps
+  sentAt          DateTime?
+  deliveredAt     DateTime?
+  readAt          DateTime?
+  
+  // Retry tracking
+  retryCount      Int        @default(0)
+  lastRetryAt     DateTime?
+  
+  // Metadata
+  metadata        Json       @default("{}")
+  
+  createdAt       DateTime   @default(now())
+
+  @@unique([tenantId, wamid])
+  @@index([tenantId, conversationId])
+  @@index([tenantId, from])
+  @@index([tenantId, to])
+  @@index([tenantId, status])
+  @@index([tenantId, createdAt])
+}
+
+enum WhatsAppMessageType {
+  TEXT
+  IMAGE
+  AUDIO
+  VIDEO
+  DOCUMENT
+  STICKER
+  LOCATION
+  CONTACTS
+  INTERACTIVE
+  REACTION
+  SYSTEM
+}
+
+enum WhatsAppMessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  ERROR
+}
+
+// ===========================================================
+// WHATSAPP TEMPLATES
+// ===========================================================
+
+model WhatsAppTemplate {
+  id                String                    @id @default(uuid())
+  tenantId          String
+  tenant            Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Meta identifiers
+  wabaTemplateId    String?
+  
+  // Template details
+  name              String
+  language          String                    @default("es_ES")
+  category          WhatsAppTemplateCategory  @default(UTILITY)
+  
+  // Components
+  headerType        String?
+  headerText        String?
+  bodyContent       String
+  footerText        String?
+  
+  buttons           Json                      @default("[]")
+  parameters        Json                      @default("[]")
+  
+  // Status
+  status            WhatsAppTemplateStatus    @default(PENDING)
+  
+  // Sync info
+  syncedAt          DateTime?
+  lastCheckAt       DateTime?
+  
+  // Usage
+  usageCount        Int                       @default(0)
+  successCount      Int                       @default(0)
+  failedCount       Int                       @default(0)
+  lastUsedAt        DateTime?
+  
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+
+  @@unique([tenantId, name])
+  @@index([tenantId, status])
+}
+
+enum WhatsAppTemplateCategory {
+  MARKETING
+  UTILITY
+  AUTHENTICATION
+  TRANSACTIONAL
+}
+
+enum WhatsAppTemplateStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DISABLED
+  DRAFT
+}
+
+// ===========================================================
+// WHATSAPP CONTACTS (Opt-in management)
+// ===========================================================
+
+model WhatsAppContact {
+  id              String    @id @default(uuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Phone and identity
+  phoneNumber     String
+  waId           String
+  
+  // Profile info
+  name            String?
+  profilePhotoUrl String?
+  
+  // Opt-in status
+  optedInAt       DateTime?
+  optedInSource   String?
+  optedOutAt      DateTime?
+  
+  // Blocking
+  blockedByUs    Boolean   @default(false)
+  blockedByUser  Boolean   @default(false)
+  blockReason    String?
+  
+  // Preferences
+  preferences     Json      @default("{}")
+  
+  // Stats
+  messagesReceived Int     @default(0)
+  messagesSent     Int     @default(0)
+  conversationsCount Int   @default(0)
+  
+  // Last contact
+  lastMessageAt   DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([tenantId, phoneNumber])
+  @@index([tenantId, waId])
+  @@index([tenantId, optedInAt])
+}
+
+// ===========================================================
+// WHATSAPP EVENT LOGS (Audit & Debugging)
+// ===========================================================
+
+model WhatsAppEventLog {
+  id              String              @id @default(uuid())
+  tenantId        String
+  tenant          Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Event details
+  eventType       WhatsAppEventType
+  
+  // Phone number
+  phoneNumberId   String?
+  
+  // Message reference
+  wamid           String?
+  from            String?
+  to              String?
+  
+  // Request/Response
+  requestPayload  Json?               @default("{}")
+  responsePayload Json?               @default("{}")
+  
+  // Status
+  status          WhatsAppEventStatus @default(SUCCESS)
+  error           String?
+  errorCode       Int?
+  
+  // Timing
+  duration        Int                 @default(0) // milliseconds
+  
+  // Additional info
+  ipAddress       String?
+  userAgent       String?
+  metadata        Json?               @default("{}")
+  
+  createdAt       DateTime            @default(now())
+
+  @@index([tenantId, eventType])
+  @@index([tenantId, wamid])
+  @@index([tenantId, createdAt])
+}
+
+enum WhatsAppEventType {
+  MESSAGE_RECEIVED
+  MESSAGE_SENT
+  MESSAGE_DELIVERED
+  MESSAGE_READ
+  MESSAGE_FAILED
+  STATUS_UPDATE
+  CONTACT_UPDATE
+  TEMPLATE_SEND
+  TEMPLATE_STATUS
+  MEDIA_UPLOAD
+  MEDIA_DOWNLOAD
+  WEBHOOK_VERIFY
+  WEBHOOK_RECEIVED
+  API_ERROR
+}
+
+enum WhatsAppEventStatus {
+  SUCCESS
+  FAILED
+  PENDING
+  RETRY
+}
+
+// ===========================================================
+// WHATSAPP RATE LIMITS (Per-tenant tracking)
+// ===========================================================
+
+model WhatsAppRateLimit {
+  id              String    @id @default(uuid())
+  tenantId        String    @unique
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Daily limits
+  messagesToday   Int       @default(0)
+  messagesResetAt DateTime
+  
+  // Burst limits
+  messagesThisSecond Int   @default(0)
+  secondResetAt      DateTime
+  
+  // Tracking
+  lastMessageAt   DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+// ===========================================================
+// WHATSAPP WEBHOOK VERIFICATION
+// ===========================================================
+
+model WhatsAppWebhookVerification {
+  id              String    @id @default(uuid())
+  tenantId        String
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  // Verification details
+  mode            String
+  token           String
+  
+  // Challenge
+  challenge       String?
+  verifiedAt      DateTime?
+  
+  // Status
+  isVerified      Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+
+  @@index([tenantId, token])
+}

@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "sourceMap": true
+  },
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts", "src/modules/alerts", "src/modules/analytics", "src/modules/whatsapp", "src/modules/ai"]
+}

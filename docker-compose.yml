@@ -1,0 +1,113 @@
+version: '3.8'
+
+# ===========================================================
+# PLATAFORMA DE ATENCIÓN INTELIGENTE
+# Docker Compose - Production Ready
+# ===========================================================
+
+services:
+  # ===========================================================
+  # PostgreSQL Database
+  # ===========================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: clinica-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-clinica}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      POSTGRES_DB: ${DB_NAME:-clinica}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-clinica}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clinica-network
+
+  # ===========================================================
+  # Redis (Optional - for caching)
+  # ===========================================================
+  redis:
+    image: redis:7-alpine
+    container_name: clinica-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - clinica-network
+
+  # ===========================================================
+  # API Application
+  # ===========================================================
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: clinica-api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://${DB_USER:-clinica}:${DB_PASSWORD:-changeme}@postgres:5432/${DB_NAME:-clinica}
+      - JWT_SECRET=${JWT_SECRET:-changeme-production-key-min-32-chars}
+      - PORT=3000
+      - LOG_LEVEL=warn
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - clinica-network
+
+  # ===========================================================
+  # Nginx Reverse Proxy
+  # ===========================================================
+  nginx:
+    image: nginx:alpine
+    container_name: clinica-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+    networks:
+      - clinica-network
+
+# ===========================================================
+# Networks
+# ===========================================================
+networks:
+  clinica-network:
+    driver: bridge
+
+# ===========================================================
+# Volumes
+# ===========================================================
+volumes:
+  postgres_data:
+  redis_data:
+

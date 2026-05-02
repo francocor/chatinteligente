@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@plataforma/api/*": ["./apps/api/src/*"],
+      "@plataforma/web/*": ["./apps/web/src/*"],
+      "@plataforma/shared/*": ["./packages/shared/*"]
+    }
+  }
+}
