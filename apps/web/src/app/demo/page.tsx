@@ -477,7 +477,7 @@ export default function DemoPage() {
               <Mail className="w-6 h-6 text-cyan-600" />
             </div>
             <h4 className="font-medium text-slate-900">Email</h4>
-            <p className="text-sm text-slate-500 mt-1">contacto@clinicasanjuan.cl</p>
+            <p className="text-sm text-slate-500 mt-1">Francocornejoc15@gmail.com</p>
           </div>
         </div>
       </section>
