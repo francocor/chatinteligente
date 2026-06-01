@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import {
@@ -12,37 +12,33 @@ import {
   Phone,
   Mail,
   Globe,
-  Clock,
   Tag,
   UserCheck,
   AlertCircle,
-  Check,
   X,
   ChevronDown,
   StickyNote,
   ArrowUpCircle,
-  ArrowDownCircle,
   MessageSquare,
-  Users,
-  Filter,
   CheckCircle,
   History,
   Info,
-  Sparkles,
   Lock,
   RefreshCw,
+  FileText,
 } from 'lucide-react';
 import { mockConversations, mockMessages, mockInternalNotes } from '@/data/mocks/conversations';
 
 type Tab = 'chat' | 'notes' | 'info' | 'analytics';
 
-const statusOptions = [
+type ConvStatus = 'ACTIVE' | 'WAITING' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+
+const statusOptions: { value: ConvStatus; label: string }[] = [
   { value: 'ACTIVE', label: 'Activa' },
   { value: 'WAITING', label: 'En espera' },
   { value: 'IN_PROGRESS', label: 'En proceso' },
   { value: 'RESOLVED', label: 'Resuelta' },
   { value: 'CLOSED', label: 'Cerrada' },
-  { value: 'ESCALATED', label: 'Escalada' },
 ];
 
 const priorityOptions = [
@@ -63,7 +59,7 @@ const agentOptions = [
 export default function ConversationDetailPage() {
   const params = useParams();
   const conversationId = params.id as string;
-  
+
   const [activeTab, setActiveTab] = useState<Tab>('chat');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -71,23 +67,60 @@ export default function ConversationDetailPage() {
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [showAgentDropdown, setShowAgentDropdown] = useState(false);
   const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
-  
+  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
+  const [feedbackType, setFeedbackType] = useState<'success' | 'info'>('success');
+  const [assignedAgentLabel, setAssignedAgentLabel] = useState<string | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const conversation = mockConversations.find(c => c.id === conversationId);
-  const messages = mockMessages.filter(m => m.conversationId === conversationId);
+  const seedMessages = mockMessages.filter(m => m.conversationId === conversationId);
+  const [localMessages, setLocalMessages] = useState(seedMessages);
+  const [currentStatus, setCurrentStatus] = useState<ConvStatus>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem(`demo_conv_status_${conversationId}`);
+      if (stored) return stored as ConvStatus;
+    }
+    return (conversation?.status as ConvStatus) || 'ACTIVE';
+  });
+  const [currentPriority, setCurrentPriority] = useState(conversation?.priority || 'NORMAL');
   const notes = mockInternalNotes.filter(n => n.conversationId === conversationId);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [localMessages]);
+
+  const showFeedback = (msg: string, type: 'success' | 'info' = 'success') => {
+    setFeedbackMsg(msg);
+    setFeedbackType(type);
+    setTimeout(() => setFeedbackMsg(null), 3500);
+  };
+
+  const saveStatus = (s: ConvStatus) => {
+    setCurrentStatus(s);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(`demo_conv_status_${conversationId}`, s);
+    }
+  };
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
     setIsSending(true);
-    await new Promise(resolve => setTimeout(resolve, 500));
+    const newMsg = {
+      id: `msg-local-${Date.now()}`,
+      conversationId,
+      direction: 'OUTBOUND' as const,
+      channel: conversation?.channel || 'WEB',
+      contentType: 'TEXT' as const,
+      fromType: 'AGENT' as const,
+      text: message,
+      fromId: 'agent-local',
+      fromName: 'Admin Demo',
+      sentAt: new Date(),
+    };
+    setLocalMessages(prev => [...prev, newMsg]);
     setMessage('');
-    setIsSending(false);
+    setTimeout(() => setIsSending(false), 300);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -126,7 +159,15 @@ export default function ConversationDetailPage() {
   }[conversation.channel] || MessageSquare;
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex gap-6">
+    <div className="h-[calc(100vh-8rem)] flex gap-6 relative">
+      {/* Feedback Toast */}
+      {feedbackMsg && (
+        <div className={`fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-white text-sm font-medium transition-all ${feedbackType === 'success' ? 'bg-green-600' : 'bg-primary-600'}`}>
+          <CheckCircle className="w-4 h-4 flex-shrink-0" />
+          {feedbackMsg}
+        </div>
+      )}
+
       {/* Chat Panel - Main */}
       <div className="flex-1 flex flex-col bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden">
         {/* Header */}
@@ -172,8 +213,12 @@ export default function ConversationDetailPage() {
                   {statusOptions.map((status) => (
                     <button
                       key={status.value}
-                      onClick={() => setShowStatusDropdown(false)}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                      onClick={() => {
+                        saveStatus(status.value);
+                        setShowStatusDropdown(false);
+                        showFeedback(`Estado cambiado a: ${status.label}`, 'info');
+                      }}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700 ${currentStatus === status.value ? 'font-semibold text-primary-600' : ''}`}
                     >
                       {status.label}
                     </button>
@@ -187,15 +232,15 @@ export default function ConversationDetailPage() {
               <button
                 onClick={() => setShowPriorityDropdown(!showPriorityDropdown)}
                 className={`flex items-center gap-2 px-3 py-1.5 text-sm border rounded-lg ${
-                  conversation.priority === 'CRITICAL' 
-                    ? 'border-red-300 bg-red-50 text-red-700' 
+                  currentPriority === 'CRITICAL'
+                    ? 'border-red-300 bg-red-50 text-red-700'
                     : 'border-neutral-200 dark:border-neutral-700'
                 }`}
               >
                 <AlertCircle className={`w-4 h-4 ${
-                  conversation.priority === 'CRITICAL' ? 'text-red-500' : 'text-neutral-400'
+                  currentPriority === 'CRITICAL' ? 'text-red-500' : 'text-neutral-400'
                 }`} />
-                {priorityOptions.find(p => p.value === conversation.priority)?.label}
+                {priorityOptions.find(p => p.value === currentPriority)?.label}
                 <ChevronDown className="w-4 h-4 text-neutral-400" />
               </button>
               {showPriorityDropdown && (
@@ -203,8 +248,8 @@ export default function ConversationDetailPage() {
                   {priorityOptions.map((priority) => (
                     <button
                       key={priority.value}
-                      onClick={() => setShowPriorityDropdown(false)}
-                      className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                      onClick={() => { setCurrentPriority(priority.value as 'LOW' | 'NORMAL' | 'HIGH' | 'CRITICAL'); setShowPriorityDropdown(false); showFeedback(`Prioridad → ${priority.label}`, 'info'); }}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700 ${currentPriority === priority.value ? 'font-semibold text-primary-600' : ''}`}
                     >
                       {priority.label}
                     </button>
@@ -248,10 +293,17 @@ export default function ConversationDetailPage() {
             <div className="h-full flex flex-col">
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((msg, index) => {
+                {localMessages.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-full text-center py-12">
+                    <MessageSquare className="w-10 h-10 text-neutral-200 mb-3" />
+                    <p className="text-sm text-neutral-400">No hay mensajes en esta conversación</p>
+                    <p className="text-xs text-neutral-300 mt-1">Escribí el primero abajo</p>
+                  </div>
+                )}
+                {localMessages.map((msg, index) => {
                   const isUser = msg.direction === 'INBOUND';
-                  const showTimestamp = index === 0 || 
-                    new Date(messages[index - 1].sentAt).getTime() - new Date(msg.sentAt).getTime() > 300000;
+                  const showTimestamp = index === 0 ||
+                    new Date(localMessages[index - 1].sentAt).getTime() - new Date(msg.sentAt).getTime() > 300000;
 
                   return (
                     <div key={msg.id}>
@@ -488,10 +540,10 @@ export default function ConversationDetailPage() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-sm font-medium text-primary-600">
-                        {conversation.assignedAgent?.user.displayName.charAt(0) || '?'}
+                        {(assignedAgentLabel || conversation.assignedAgent?.user.displayName || '?').charAt(0)}
                       </div>
                       <span className="text-sm">
-                        {conversation.assignedAgent?.user.displayName || 'Sin asignar'}
+                        {assignedAgentLabel || conversation.assignedAgent?.user.displayName || 'Sin asignar'}
                       </span>
                     </div>
                     <ChevronDown className="w-4 h-4 text-neutral-400" />
@@ -501,7 +553,16 @@ export default function ConversationDetailPage() {
                       {agentOptions.map((agent) => (
                         <button
                           key={agent.id}
-                          onClick={() => setShowAgentDropdown(false)}
+                          onClick={() => {
+                            setAssignedAgentLabel(agent.id === 'unassigned' ? null : agent.label);
+                            setShowAgentDropdown(false);
+                            showFeedback(
+                              agent.id === 'unassigned'
+                                ? 'Conversación desasignada'
+                                : `Asignado a ${agent.label}`,
+                              'info'
+                            );
+                          }}
                           className="w-full px-3 py-2 text-left text-sm hover:bg-neutral-100 dark:hover:bg-neutral-700"
                         >
                           {agent.label}
@@ -576,7 +637,7 @@ export default function ConversationDetailPage() {
                 <div className="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
                   <p className="text-xs text-neutral-500">Mensajes totales</p>
                   <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-                    {messages.length}
+                    {localMessages.length}
                   </p>
                 </div>
                 <div className="p-4 bg-neutral-50 dark:bg-neutral-900 rounded-lg">
@@ -629,15 +690,15 @@ export default function ConversationDetailPage() {
             ACCIONES
           </h3>
           <div className="space-y-2">
-            <button className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+            <button onClick={() => showFeedback('Email enviado al cliente en modo demo.', 'info')} className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg transition-colors">
               <Mail className="w-4 h-4 text-neutral-400" />
               Enviar email
             </button>
-            <button className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+            <button onClick={() => showFeedback('Iniciando llamada en modo demo.', 'info')} className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg transition-colors">
               <Phone className="w-4 h-4 text-neutral-400" />
               Llamar
             </button>
-            <button className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg">
+            <button onClick={() => setActiveTab('analytics')} className="w-full flex items-center gap-3 p-3 text-left text-sm hover:bg-neutral-50 dark:hover:bg-neutral-700 rounded-lg transition-colors">
               <History className="w-4 h-4 text-neutral-400" />
               Ver historial
             </button>
@@ -650,19 +711,35 @@ export default function ConversationDetailPage() {
             GESTIÓN
           </h3>
           <div className="space-y-2">
-            {conversation.status !== 'RESOLVED' && conversation.status !== 'CLOSED' && (
-              <button className="w-full flex items-center gap-3 p-3 text-sm text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg">
+            {currentStatus !== 'RESOLVED' && currentStatus !== 'CLOSED' && (
+              <button
+                onClick={() => { saveStatus('RESOLVED'); showFeedback('Conversación marcada como resuelta'); }}
+                className="w-full flex items-center gap-3 p-3 text-sm text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition-colors"
+              >
                 <CheckCircle className="w-4 h-4" />
                 Marcar como resuelta
               </button>
             )}
-            {conversation.status !== 'CLOSED' && (
-              <button className="w-full flex items-center gap-3 p-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg">
+            {currentStatus !== 'CLOSED' && (
+              <button
+                onClick={() => { saveStatus('CLOSED'); showFeedback('Conversación cerrada correctamente'); }}
+                className="w-full flex items-center gap-3 p-3 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+              >
                 <X className="w-4 h-4" />
                 Cerrar conversación
               </button>
             )}
-            <button className="w-full flex items-center gap-3 p-3 text-sm text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg">
+            <button
+              onClick={() => showFeedback('Ticket creado exitosamente (modo demo)', 'info')}
+              className="w-full flex items-center gap-3 p-3 text-sm text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors"
+            >
+              <FileText className="w-4 h-4" />
+              Crear ticket
+            </button>
+            <button
+              onClick={() => showFeedback('Escalado al supervisor — se notificó al equipo', 'info')}
+              className="w-full flex items-center gap-3 p-3 text-sm text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition-colors"
+            >
               <ArrowUpCircle className="w-4 h-4" />
               Escalar a supervisor
             </button>

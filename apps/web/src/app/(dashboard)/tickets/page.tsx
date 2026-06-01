@@ -43,10 +43,10 @@ const priorityConfig: Record<string, { label: string; color: string }> = {
 
 const departmentFilter = [
   { id: 'all', label: 'Todos' },
-  { id: 'atencion', label: 'Atención' },
-  { id: 'soporte', label: 'Soporte' },
-  { id: 'cobranzas', label: 'Cobranzas' },
-  { id: 'urgencias', label: 'Urgencias' },
+  { id: 'atencion', label: 'Atención al Cliente' },
+  { id: 'ventas', label: 'Ventas' },
+  { id: 'soporte', label: 'Soporte Técnico' },
+  { id: 'operaciones', label: 'Operaciones' },
 ];
 
 const statusFilter = [
@@ -72,6 +72,14 @@ export default function TicketsPage() {
   const [priority, setPriority] = useState('all');
   const [department, setDepartment] = useState('all');
 
+  const categoryToDept: Record<string, string> = {
+    support: 'atencion',
+    complaint: 'atencion',
+    technical: 'soporte',
+    billing: 'ventas',
+    other: 'operaciones',
+  };
+
   const filteredTickets = mockTickets.filter(ticket => {
     const matchesSearch = searchQuery === '' ||
       ticket.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -79,7 +87,8 @@ export default function TicketsPage() {
       ticket.ticketNumber.toString().includes(searchQuery);
     const matchesStatus = status === 'all' || ticket.status === status;
     const matchesPriority = priority === 'all' || ticket.priority === priority;
-    return matchesSearch && matchesStatus && matchesPriority;
+    const matchesDept = department === 'all' || categoryToDept[ticket.category] === department;
+    return matchesSearch && matchesStatus && matchesPriority && matchesDept;
   });
 
   const formatTimeAgo = (date: Date) => {
@@ -142,7 +151,7 @@ export default function TicketsPage() {
       </div>
 
       {/* Tickets Table */}
-      <motion.div initial={{ opacity: 0, y: 20 }} className="bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -197,7 +206,7 @@ export default function TicketsPage() {
                   </td>
                   <td className="px-4 py-3 text-xs text-neutral-500">{formatTimeAgo(ticket.createdAt)}</td>
                   <td className="px-4 py-3">
-                    <Link href={`/ticket/${ticket.id}`} className="p-2 hover:bg-neutral-100 rounded-lg">
+                    <Link href={`/dashboard/tickets/${ticket.id}`} className="p-2 hover:bg-neutral-100 rounded-lg">
                       <ChevronRight className="w-4 h-4 text-neutral-400" />
                     </Link>
                   </td>

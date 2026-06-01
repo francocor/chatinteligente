@@ -105,7 +105,7 @@ export function ToastProvider({ children, position = 'top-right', maxToasts = 5 
     <ToastContext.Provider value={{ toasts, addToast, removeToast, clearToasts }}>
       {children}
       {typeof window !== 'undefined' && createPortal(
-        <ToastContainer toasts={position === 'top-right' || position === 'top-left' || position === 'top-center'} toasts={toasts} position={position} onRemove={removeToast} />,
+        <ToastContainer toasts={toasts} position={position} onRemove={removeToast} />,
         document.body
       )}
     </ToastContext.Provider>
@@ -119,7 +119,6 @@ interface ToastContainerProps {
   toasts: Toast[];
   position: ToastPosition;
   onRemove: (id: string) => void;
-  toasts?: boolean;
 }
 
 function ToastContainer({ toasts, position, onRemove }: ToastContainerProps) {

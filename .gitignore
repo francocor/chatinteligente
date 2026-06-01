@@ -42,3 +42,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Local tooling
+.claude/
+*.tsbuildinfo
+build_output.txt

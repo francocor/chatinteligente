@@ -90,7 +90,7 @@ export function Hero() {
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-full mb-6">
                 <Sparkles className="w-4 h-4 text-primary-500" />
                 <span className="text-sm font-medium text-primary-700">
-                  🎉 Nuevo: WhatsApp Business integrado
+                  🎉 Nuevo: WhatsApp Business + IA integrados
                 </span>
               </div>
             </motion.div>
@@ -101,7 +101,7 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6"
             >
-              La atención médica{' '}
+              La atención al cliente{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600">
                 redefinida por IA
               </span>
@@ -113,9 +113,9 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-lg sm:text-xl text-gray-600 mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              Transforma tu clínica o centro médico con asistencia inteligente 24/7. 
-              Combina chatbot con respuestas IA, derivación fluida a profesionales y analíticas 
-              que impulsan la satisfacción de tus pacientes.
+              Centralizá la atención de tu empresa con IA conversacional 24/7.
+              Automatizá consultas frecuentes, derivá a agentes humanos cuando sea necesario
+              y medí el rendimiento de tu equipo en tiempo real.
             </motion.p>
 
             <motion.div
@@ -196,10 +196,10 @@ export function Hero() {
                     </div>
                     <div className="bg-gray-100 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
                       <p className="text-sm text-gray-700">
-                        👋 Hola! Soy el asistente de atención de Clínica Sana. 
-                        puedo ayudarte a{' '}
-                        <span className="font-semibold text-primary-600">sacar un turno</span>, 
-                        {' '}consultar tus estudios o resolver dudas. ¿En qué puedo ayudarte?
+                        👋 Hola! Soy el asistente virtual.
+                        Puedo ayudarte con{' '}
+                        <span className="font-semibold text-primary-600">consultas, precios y soporte</span>.
+                        {' '}¿En qué puedo ayudarte hoy?
                       </p>
                     </div>
                   </div>
@@ -211,7 +211,7 @@ export function Hero() {
                     </div>
                     <div className="bg-primary-500 rounded-2xl rounded-tr-sm p-3 max-w-[80%]">
                       <p className="text-sm text-white">
-                        Necesito un turno con el cardiólogo para mañana
+                        Necesito saber el precio del plan empresarial
                       </p>
                     </div>
                   </div>
@@ -223,15 +223,15 @@ export function Hero() {
                     </div>
                     <div className="bg-gray-100 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
                       <p className="text-sm text-gray-700 mb-2">
-                        Perfecto! Tenemos disponibilidad mañana a las 10:00 o 16:00 hs. 
-                        Which horario te conviene?
+                        El plan empresarial incluye agentes ilimitados y soporte prioritario.
+                        ¿Querés que te envíe la propuesta o preferís hablar con un asesor?
                       </p>
                       <div className="flex gap-2 mt-2">
                         <button className="px-3 py-1 bg-primary-100 text-primary-600 rounded-lg text-xs font-medium">
-                          10:00 hs
+                          Ver propuesta
                         </button>
                         <button className="px-3 py-1 bg-primary-100 text-primary-600 rounded-lg text-xs font-medium">
-                          16:00 hs
+                          Hablar con asesor
                         </button>
                       </div>
                     </div>
@@ -290,7 +290,7 @@ export function Hero() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-gray-900">12</p>
-                    <p className="text-xs text-gray-500">turnos hoy</p>
+                    <p className="text-xs text-gray-500">consultas hoy</p>
                   </div>
                 </div>
               </motion.div>

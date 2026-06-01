@@ -5,28 +5,28 @@ import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    name: 'Dra. María González',
-    role: 'Directora Médica',
-    company: 'Clínica San José',
-    image: 'MG',
+    name: 'Pablo Torres',
+    role: 'Gerente de Atención al Cliente',
+    company: 'Nova Commerce',
+    image: 'PT',
     stars: 5,
-    text: 'Implementamos Atención IA y redujimos nuestro workload administrativo en un 60%. Los pacientes adoran la respuesta inmediata.',
+    text: 'Automatizamos el 70% de las consultas sobre pedidos y devoluciones. Nuestro equipo ahora se enfoca en los casos que realmente importan. El ROI fue evidente en el primer mes.',
   },
   {
-    name: 'Dr. Carlos Ramírez',
-    role: 'Jefe de Admisión',
-    company: 'Sanatorio Central',
-    image: 'CR',
-    stars: 5,
-    text: 'La integración con WhatsApp fue clave. El 80% de nuestros pacientes prefiere WhatsApp para gestionar turnos.',
-  },
-  {
-    name: 'Lic. Ana Martínez',
+    name: 'Laura Méndez',
     role: 'Directora de Operaciones',
-    company: 'Centro Médico Norte',
-    image: 'AM',
+    company: 'InmoPlus Propiedades',
+    image: 'LM',
     stars: 5,
-    text: 'Las analíticas nos permiten optimizar horarios y recursos. Ya no podemos imaginar operar sin esta plataforma.',
+    text: 'La integración con WhatsApp fue clave. El 80% de nuestros clientes prefiere WhatsApp para consultar propiedades y coordinar visitas. Multiplicamos nuestra capacidad sin ampliar el equipo.',
+  },
+  {
+    name: 'Sebastián Vidal',
+    role: 'Head of Customer Success',
+    company: 'DataFlow Soluciones',
+    image: 'SV',
+    stars: 5,
+    text: 'Las analíticas nos permiten optimizar horarios y recursos. Bajamos el tiempo de primera respuesta de 4 horas a 8 minutos. Ya no podemos imaginar operar sin esta plataforma.',
   },
 ];
 
@@ -52,7 +52,7 @@ export function Testimonials() {
               Testimonios
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-             Lo que dicen nuestros clientes
+              Lo que dicen nuestros clientes
             </h2>
           </motion.div>
         </div>
@@ -75,7 +75,7 @@ export function Testimonials() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6 relative z-10">
-                "{testimonial.text}"
+                &quot;{testimonial.text}&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
@@ -97,7 +97,7 @@ export function Testimonials() {
           viewport={{ once: true }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6"
         >
-          {stats.map((stat, index) => (
+          {stats.map((stat) => (
             <div key={stat.label} className="text-center">
               <p className="text-4xl font-bold text-primary-600">{stat.value}</p>
               <p className="text-gray-600">{stat.label}</p>

@@ -14,21 +14,17 @@ import {
   X,
   ChevronRight,
   ArrowUp,
-  ArrowDown,
-  MoreHorizontal,
   MessageSquare,
   Phone,
   Mail,
   Globe,
-  Tag,
   Layers,
-  ChevronDown,
   Zap,
-  UserCheck,
   Send,
   RefreshCw,
+  CheckCircle,
 } from 'lucide-react';
-import { mockConversations, conversationStats, mockMessages } from '@/data/mocks/conversations';
+import { mockConversations, conversationStats } from '@/data/mocks/conversations';
 
 const statusConfig: Record<string, { label: string; color: string; bg: string; icon: any }> = {
   ACTIVE: { label: 'Activa', color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-900/20', icon: Zap },
@@ -58,10 +54,9 @@ const channelIcons: Record<string, any> = {
 const departments = [
   { id: 'all', label: 'Todos los departamentos' },
   { id: 'atencion', label: 'Atención al Cliente' },
-  { id: 'turnos', label: 'Turnos' },
-  { id: 'laboratorio', label: 'Laboratorio' },
-  { id: 'urgencias', label: 'Urgencias' },
-  { id: 'cobranzas', label: 'Cobranzas' },
+  { id: 'ventas', label: 'Ventas' },
+  { id: 'soporte', label: 'Soporte Técnico' },
+  { id: 'operaciones', label: 'Operaciones' },
 ];
 
 const statuses = [
@@ -82,36 +77,86 @@ const priorities = [
 ];
 
 export default function ConversationsPage() {
+  const [conversations, setConversations] = useState(() =>
+    mockConversations.map(conv => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem(`demo_conv_status_${conv.id}`);
+        if (stored) return { ...conv, status: stored as typeof conv.status };
+      }
+      return conv;
+    })
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [status, setStatus] = useState('all');
   const [priority, setPriority] = useState('all');
   const [department, setDepartment] = useState('all');
   const [selectedConversations, setSelectedConversations] = useState<string[]>([]);
+  const [bulkFeedback, setBulkFeedback] = useState<string | null>(null);
 
-  const filteredConversations = mockConversations.filter((conv) => {
-    const matchesSearch = searchQuery === '' ||
+  const convToDept = (conv: typeof conversations[0]): string => {
+    if (conv.priority === 'CRITICAL') return 'soporte';
+    if (conv.channel === 'EMAIL') return 'operaciones';
+    if (conv.channel === 'INSTAGRAM' || conv.channel === 'FACEBOOK') return 'ventas';
+    return 'atencion';
+  };
+
+  const filteredConversations = conversations.filter((conv) => {
+    const matchesSearch =
+      searchQuery === '' ||
       conv.contact?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       conv.firstMessage?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       conv.conversationNumber.toString().includes(searchQuery);
-    
     const matchesStatus = status === 'all' || conv.status === status;
     const matchesPriority = priority === 'all' || conv.priority === priority;
-    
-    return matchesSearch && matchesStatus && matchesPriority;
+    const matchesDept = department === 'all' || convToDept(conv) === department;
+    return matchesSearch && matchesStatus && matchesPriority && matchesDept;
   });
 
   const handleSelectAll = () => {
     if (selectedConversations.length === filteredConversations.length) {
       setSelectedConversations([]);
     } else {
-      setSelectedConversations(filteredConversations.map(c => c.id));
+      setSelectedConversations(filteredConversations.map((c) => c.id));
     }
   };
 
   const handleSelectConversation = (id: string) => {
-    setSelectedConversations(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    setSelectedConversations((prev) => (prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]));
+  };
+
+  const showBulkFeedback = (msg: string) => {
+    setBulkFeedback(msg);
+    setTimeout(() => setBulkFeedback(null), 2500);
+  };
+
+  const handleBulkAssign = () => {
+    const count = selectedConversations.length;
+    setSelectedConversations([]);
+    showBulkFeedback(
+      `${count} conversación${count > 1 ? 'es' : ''} asignada${count > 1 ? 's' : ''} en modo demo.`
     );
+  };
+
+  const handleBulkClose = () => {
+    const count = selectedConversations.length;
+    setConversations((prev) =>
+      prev.map((c) =>
+        selectedConversations.includes(c.id) ? { ...c, status: 'CLOSED' as const } : c
+      )
+    );
+    setSelectedConversations([]);
+    showBulkFeedback(
+      `${count} conversación${count > 1 ? 'es' : ''} cerrada${count > 1 ? 's' : ''} correctamente.`
+    );
+  };
+
+  const handleBulkDelete = () => {
+    const count = selectedConversations.length;
+    if (window.confirm(`¿Eliminar ${count} conversación${count > 1 ? 'es' : ''} seleccionada${count > 1 ? 's' : ''}?`)) {
+      setConversations((prev) => prev.filter((c) => !selectedConversations.includes(c.id)));
+      setSelectedConversations([]);
+      showBulkFeedback(`${count} conversación${count > 1 ? 'es' : ''} eliminada${count > 1 ? 's' : ''} en modo demo.`);
+    }
   };
 
   const formatTime = (date: Date) => {
@@ -120,7 +165,6 @@ export default function ConversationsPage() {
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
-
     if (minutes < 1) return 'Ahora';
     if (minutes < 60) return `${minutes}m`;
     if (hours < 24) return `${hours}h`;
@@ -130,6 +174,18 @@ export default function ConversationsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Bulk feedback toast */}
+      {bulkFeedback && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-6 right-6 flex items-center gap-2 bg-neutral-900 dark:bg-neutral-700 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium z-50"
+        >
+          <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
+          {bulkFeedback}
+        </motion.div>
+      )}
+
       {/* Header Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
         {[
@@ -146,9 +202,7 @@ export default function ConversationsPage() {
             className="bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4"
           >
             <div className="flex items-center gap-2 mb-1">
-              {stat.icon && (
-                <stat.icon className={`w-4 h-4 ${stat.color}`} />
-              )}
+              {stat.icon && <stat.icon className={`w-4 h-4 ${stat.color}`} />}
               <span className="text-xs text-neutral-500 dark:text-neutral-400">{stat.label}</span>
             </div>
             <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
@@ -159,7 +213,6 @@ export default function ConversationsPage() {
       {/* Filters */}
       <div className="bg-white dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4">
         <div className="flex flex-wrap items-center gap-4">
-          {/* Search */}
           <div className="flex-1 min-w-[200px] max-w-md">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -172,8 +225,6 @@ export default function ConversationsPage() {
               />
             </div>
           </div>
-
-          {/* Status */}
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-neutral-400" />
             <select
@@ -186,8 +237,6 @@ export default function ConversationsPage() {
               ))}
             </select>
           </div>
-
-          {/* Priority */}
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-neutral-400" />
             <select
@@ -200,8 +249,6 @@ export default function ConversationsPage() {
               ))}
             </select>
           </div>
-
-          {/* Department */}
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-neutral-400" />
             <select
@@ -214,11 +261,7 @@ export default function ConversationsPage() {
               ))}
             </select>
           </div>
-
-          {/* Results count */}
-          <div className="ml-auto text-sm text-neutral-500">
-            {filteredConversations.length} conversaciones
-          </div>
+          <div className="ml-auto text-sm text-neutral-500">{filteredConversations.length} conversaciones</div>
         </div>
       </div>
 
@@ -235,32 +278,21 @@ export default function ConversationsPage() {
                 <th className="w-10 px-4 py-3">
                   <input
                     type="checkbox"
-                    checked={selectedConversations.length === filteredConversations.length && filteredConversations.length > 0}
+                    checked={
+                      selectedConversations.length === filteredConversations.length &&
+                      filteredConversations.length > 0
+                    }
                     onChange={handleSelectAll}
                     className="w-4 h-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
                   />
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Estado
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Prioridad
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Conversation
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Cliente
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Canal
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Asignado
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
-                  Actualizado
-                </th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Estado</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Prioridad</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Conversación</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Cliente</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Canal</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Asignado</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Actualizado</th>
                 <th className="w-16 px-4 py-3"></th>
               </tr>
             </thead>
@@ -268,7 +300,6 @@ export default function ConversationsPage() {
               {filteredConversations.map((conv) => {
                 const StatusIcon = statusConfig[conv.status]?.icon || Inbox;
                 const ChannelIcon = channelIcons[conv.channel] || MessageSquare;
-
                 return (
                   <tr
                     key={conv.id}
@@ -286,7 +317,9 @@ export default function ConversationsPage() {
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[conv.status]?.bg || ''} ${statusConfig[conv.status]?.color || ''}`}>
+                      <div
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[conv.status]?.bg || ''} ${statusConfig[conv.status]?.color || ''}`}
+                      >
                         <StatusIcon className="w-3 h-3" />
                         {statusConfig[conv.status]?.label || conv.status}
                       </div>
@@ -294,8 +327,9 @@ export default function ConversationsPage() {
                     <td className="px-4 py-3">
                       {conv.priority !== 'NORMAL' && (
                         <span className={`inline-flex items-center gap-1 text-xs font-medium ${priorityConfig[conv.priority]?.color}`}>
-                          {conv.priority === 'CRITICAL' && <ArrowUp className="w-3 h-3" />}
-                          {conv.priority === 'HIGH' && <ArrowUp className="w-3 h-3" />}
+                          {(conv.priority === 'CRITICAL' || conv.priority === 'HIGH') && (
+                            <ArrowUp className="w-3 h-3" />
+                          )}
                           {priorityConfig[conv.priority]?.label}
                         </span>
                       )}
@@ -316,9 +350,7 @@ export default function ConversationsPage() {
                           {conv.contact?.name || 'Anónimo'}
                         </p>
                         {conv.contact?.phone && (
-                          <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                            {conv.contact.phone}
-                          </p>
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400">{conv.contact.phone}</p>
                         )}
                       </div>
                     </td>
@@ -362,7 +394,6 @@ export default function ConversationsPage() {
           </table>
         </div>
 
-        {/* Empty State */}
         {filteredConversations.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 px-4">
             <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center mb-4">
@@ -389,13 +420,22 @@ export default function ConversationsPage() {
             {selectedConversations.length} conversación{selectedConversations.length > 1 ? 'es' : ''} seleccionada{selectedConversations.length > 1 ? 's' : ''}
           </span>
           <div className="h-6 w-px bg-neutral-700" />
-          <button className="text-sm font-medium hover:text-primary-400">
+          <button
+            onClick={handleBulkAssign}
+            className="text-sm font-medium hover:text-primary-400 transition-colors"
+          >
             Asignar
           </button>
-          <button className="text-sm font-medium hover:text-primary-400">
+          <button
+            onClick={handleBulkClose}
+            className="text-sm font-medium hover:text-yellow-400 transition-colors"
+          >
             Cerrar
           </button>
-          <button className="text-sm font-medium text-danger-400 hover:text-danger-300">
+          <button
+            onClick={handleBulkDelete}
+            className="text-sm font-medium text-red-400 hover:text-red-300 transition-colors"
+          >
             Eliminar
           </button>
           <button

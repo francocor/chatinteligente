@@ -25,10 +25,10 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 /* ---------- Size Config ---------- */
 const sizes: Record<BadgeSize, { px: string; py: string; text: string; gap: string; dot: string }> = {
-  xs: { px: 'px-2 py-0.5', text: 'text-[10px]', gap: 'gap-1', dot: 'w-1 h-1' },
-  sm: { px: 'px-2.5 py-0.5', text: 'text-xs', gap: 'gap-1.5', dot: 'w-1.5 h-1.5' },
-  md: { px: 'px-2.5 py-1', text: 'text-xs', gap: 'gap-1.5', dot: 'w-1.5 h-1.5' },
-  lg: { px: 'px-3 py-1.5', text: 'text-sm', gap: 'gap-2', dot: 'w-2 h-2' },
+  xs: { px: 'px-2', py: 'py-0.5', text: 'text-[10px]', gap: 'gap-1', dot: 'w-1 h-1' },
+  sm: { px: 'px-2.5', py: 'py-0.5', text: 'text-xs', gap: 'gap-1.5', dot: 'w-1.5 h-1.5' },
+  md: { px: 'px-2.5', py: 'py-1', text: 'text-xs', gap: 'gap-1.5', dot: 'w-1.5 h-1.5' },
+  lg: { px: 'px-3', py: 'py-1.5', text: 'text-sm', gap: 'gap-2', dot: 'w-2 h-2' },
 };
 
 /* ---------- Variant Styles ---------- */

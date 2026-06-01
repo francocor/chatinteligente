@@ -86,7 +86,7 @@ export default function LoginPage() {
           </h2>
           
           <p className="text-primary-50 text-lg mb-8 max-w-md">
-            Simplifica la gestión de conversaciones, optimiza tiempos de respuesta y mejora la satisfacción de tus pacientes o clientes.
+            Simplifica la gestión de conversaciones, optimiza tiempos de respuesta y mejora la satisfacción de tus clientes.
           </p>
 
           <div className="space-y-4">
@@ -290,7 +290,7 @@ export default function LoginPage() {
 
           {/* Footer */}
           <div className="text-center text-xs text-neutral-400">
-            <p>© 2024 Atención Inteligente. Todos los derechos reservados.</p>
+            <p>© 2025 Atención Inteligente. Todos los derechos reservados.</p>
           </div>
         </div>
       </div>

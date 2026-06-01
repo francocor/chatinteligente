@@ -36,7 +36,7 @@ interface AuthContextType extends AuthState {
   resetPassword: (token: string, newPassword: string) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
   refreshSession: () => Promise<void>;
-  hasPermission: (permission: string) => boolean;
+  hasPermission: (permission: string | string[]) => boolean;
   hasRole: (role: string | string[]) => boolean;
 }
 
@@ -74,8 +74,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!state.isLoading && !state.isAuthenticated) {
       const isAuthRoute = pathname?.startsWith('/(auth)/');
-      const isPublicRoute = pathname === '/' || pathname?.startsWith('/register') || pathname?.startsWith('/forgot-password');
-      
+      const isPublicRoute =
+        pathname === '/' ||
+        pathname === '/login' ||
+        pathname?.startsWith('/register') ||
+        pathname?.startsWith('/forgot-password');
+
       if (!isAuthRoute && !isPublicRoute) {
         router.push('/login');
       }
@@ -231,7 +235,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async (allDevices: boolean = false) => {
     const token = localStorage.getItem('accessToken');
-    
+    // Clear immediately — no waiting for backend
+    clearAuth();
+    router.replace('/login');
+    // Notify backend in background (failures are safe to ignore)
     try {
       await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
@@ -242,11 +249,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({ allDevices }),
       });
     } catch {
-      // Ignore errors
+      // Already logged out locally
     }
-
-    clearAuth();
-    router.push('/login');
   };
 
   const forgotPassword = async (email: string, tenantId: string) => {
@@ -260,8 +264,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const error = await response.json();
       throw new Error(error.message || 'Error al solicitar recuperación');
     }
-
-    return true;
   };
 
   const resetPassword = async (token: string, newPassword: string) => {
@@ -275,8 +277,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const error = await response.json();
       throw new Error(error.message || 'Error al restablecer contraseña');
     }
-
-    return true;
   };
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
@@ -295,8 +295,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const error = await response.json();
       throw new Error(error.message || 'Error al cambiar contraseña');
     }
-
-    return true;
   };
 
   const refreshSession = async () => {
@@ -309,13 +307,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await refreshSessionToken(refreshToken);
   };
 
-  const hasPermission = (permission: string): boolean => {
+  const hasPermission = (permission: string | string[]): boolean => {
     if (!state.user) return false;
-    
-    // Super admin has all permissions
     if (state.user.permissions.includes('*')) return true;
-    
-    return state.user.permissions.includes(permission);
+    const perms = Array.isArray(permission) ? permission : [permission];
+    return perms.every(p => state.user!.permissions.includes(p));
   };
 
    const hasRole = (role: string | string[]): boolean => {

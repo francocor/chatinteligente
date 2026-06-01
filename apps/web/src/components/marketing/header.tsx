@@ -13,10 +13,10 @@ const navigation = [
 ];
 
 const solutions = [
-  { name: 'Clínicas Médicas', href: '/demo' },
-  { name: 'Centros de Salud', href: '#solutions' },
-  { name: 'Telecomunicaciones', href: '#solutions' },
-  { name: 'Comercio Retail', href: '#solutions' },
+  { name: 'E-commerce', href: '/demo' },
+  { name: 'Salud y Bienestar', href: '/demo' },
+  { name: 'Soporte Técnico', href: '/demo' },
+  { name: 'Servicios Profesionales', href: '/demo' },
 ];
 
 export function Header() {

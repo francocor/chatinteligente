@@ -1,31 +1,38 @@
 import { KnowledgeEntry, KnowledgeCategory, KnowledgeStats } from '@/types/knowledge';
 
 export const mockCategories: KnowledgeCategory[] = [
-  { id: 'cat-1', tenantId: 'tenant-1', name: 'Horarios de Atención', description: 'Información sobre horarios de la clínica', color: '#3b82f6', entryCount: 4, isActive: true, createdAt: new Date('2024-01-01') },
-  { id: 'cat-2', tenantId: 'tenant-1', name: 'Turnos y Citas', description: 'Gestión de citas médicas', color: '#10b981', entryCount: 6, isActive: true, createdAt: new Date('2024-01-01') },
-  { id: 'cat-3', tenantId: 'tenant-1', name: 'Coberturas y Obras Sociales', description: 'Información sobre obras sociales aceptadas', color: '#f59e0b', entryCount: 3, isActive: true, createdAt: new Date('2024-01-05') },
-  { id: 'cat-4', tenantId: 'tenant-1', name: 'Estudios y Exámenes', description: 'Información sobre estudios clínicos', color: '#8b5cf6', entryCount: 5, isActive: true, createdAt: new Date('2024-01-10') },
-  { id: 'cat-5', tenantId: 'tenant-1', name: 'Resultados', description: 'Cómo obtener resultados de estudios', color: '#ec4899', entryCount: 2, isActive: true, createdAt: new Date('2024-01-15') },
-  { id: 'cat-6', tenantId: 'tenant-1', name: 'Urgencias', description: 'Protocolos de emergencia', color: '#ef4444', entryCount: 2, isActive: true, createdAt: new Date('2024-01-20') },
-  { id: 'cat-7', tenantId: 'tenant-1', name: 'Sedes y Ubicación', description: 'Direcciones de las sedes', color: '#06b6d4', entryCount: 3, isActive: true, createdAt: new Date('2024-01-25') },
-  { id: 'cat-8', tenantId: 'tenant-1', name: 'Documentación', description: 'Requisitos y trámites', color: '#6366f1', entryCount: 4, isActive: true, createdAt: new Date('2024-02-01') },
+  { id: 'cat-1', tenantId: 'tenant-1', name: 'Horarios de Atención', description: 'Información sobre horarios y disponibilidad', color: '#3b82f6', entryCount: 3, isActive: true, createdAt: new Date('2024-01-01') },
+  { id: 'cat-2', tenantId: 'tenant-1', name: 'Canales de Contacto', description: 'Cómo comunicarse con nosotros', color: '#10b981', entryCount: 4, isActive: true, createdAt: new Date('2024-01-01') },
+  { id: 'cat-3', tenantId: 'tenant-1', name: 'Medios de Pago', description: 'Métodos de pago y facturación', color: '#f59e0b', entryCount: 3, isActive: true, createdAt: new Date('2024-01-05') },
+  { id: 'cat-4', tenantId: 'tenant-1', name: 'Seguimiento de Solicitudes', description: 'Estado y seguimiento de pedidos o tickets', color: '#8b5cf6', entryCount: 4, isActive: true, createdAt: new Date('2024-01-10') },
+  { id: 'cat-5', tenantId: 'tenant-1', name: 'Políticas y Garantías', description: 'Devoluciones, garantías y términos', color: '#ec4899', entryCount: 3, isActive: true, createdAt: new Date('2024-01-15') },
+  { id: 'cat-6', tenantId: 'tenant-1', name: 'Soporte Técnico', description: 'Resolución de problemas frecuentes', color: '#ef4444', entryCount: 3, isActive: true, createdAt: new Date('2024-01-20') },
+  { id: 'cat-7', tenantId: 'tenant-1', name: 'Planes y Precios', description: 'Información de planes y cotizaciones', color: '#06b6d4', entryCount: 3, isActive: true, createdAt: new Date('2024-01-25') },
+  { id: 'cat-8', tenantId: 'tenant-1', name: 'Reportes y Métricas', description: 'Analíticas y exportaciones', color: '#6366f1', entryCount: 3, isActive: true, createdAt: new Date('2024-02-01') },
 ];
 
 export const mockKnowledgeEntries: KnowledgeEntry[] = [
   {
     id: 'kb-1',
     tenantId: 'tenant-1',
-    title: 'Horarios de Atención General',
-    content: `Nuestra clínica atiende de lunes a viernes de 08:00 a 20:00 horas, y los sábados de 08:00 a 14:00 horas.
+    title: 'Horarios de Atención',
+    content: `Nuestro equipo de atención al cliente está disponible en los siguientes horarios:
 
-Los días domingos y festivos permanecemos cerrados.
+**Atención en vivo (agentes humanos):**
+Lunes a viernes: 08:00 a 20:00 hs
+Sábados: 09:00 a 14:00 hs
+Domingos: Cerrado
 
-Para atenciones de emergencia, tenemos disponibilidad las 24 horas en nuestra sede central de Santiago.`,
-    summary: 'Horarios de atención: L-V 08:00-20:00, Sábados 08:00-14:00',
+**Asistente virtual (IA):**
+Disponible las 24 horas, los 7 días de la semana.
+
+**Respuesta por email:**
+Tiempo máximo de respuesta: 4 horas hábiles.`,
+    summary: 'Atención en vivo L-V 08:00-20:00. IA disponible 24/7.',
     category: 'Horarios de Atención',
-    tags: ['horarios', 'atención', 'emergencia'],
-    keywords: ['horario', 'atención', 'abierto', 'cerrado', 'domingo', 'festivo'],
-    variants: ['a qué hora abren', 'cuándo atienden', 'horario de funcionamiento', 'están abiertos hoy'],
+    tags: ['horarios', 'atención', 'disponibilidad'],
+    keywords: ['horario', 'atienden', 'abierto', 'cerrado', 'cuándo', 'disponible'],
+    variants: ['a qué hora atienden', 'cuándo puedo hablar con alguien', 'están abiertos hoy', 'horario de funcionamiento'],
     sourceType: 'FAQ',
     status: 'ACTIVE',
     isActive: true,
@@ -39,20 +46,20 @@ Para atenciones de emergencia, tenemos disponibilidad las 24 horas en nuestra se
   {
     id: 'kb-2',
     tenantId: 'tenant-1',
-    title: 'Cómo Solicitar un Turno',
-    content: `Para solicitar un turno médico puedes hacerlo a través de:
+    title: 'Cómo Iniciar una Consulta',
+    content: `Podés contactarnos a través de los siguientes canales:
 
-1. WhatsApp: Escribe al número +56 9 1234 5678
-2. Teléfono: Llama al 600 500 4000
-3. Portal Web: www.clinicasanjuan.cl/turnos
-4. Presencial: En cualquiera de nuestras sedes
+1. **Chat en vivo** — hacé clic en el botón del chat en nuestra web
+2. **WhatsApp** — escribinos al +54 9 11 0000-0000
+3. **Email** — contacto@empresa.com
+4. **Teléfono** — 0800-000-0000 (L-V 08:00-18:00)
 
-Recuerda tener tu RUT y obra social a mano.`,
-    summary: 'Métodos para solicitar turno: WhatsApp, Teléfono, Web o Presencial',
-    category: 'Turnos y Citas',
-    tags: ['turno', 'cita', 'solicitar', 'agenda'],
-    keywords: ['turno', 'cita', 'reservar', 'agendar', 'hora'],
-    variants: ['cómo reservo hora', 'pedir hora', 'conseguir turno', 'como obtengo una cita'],
+El asistente virtual responde de inmediato. Si necesitás un agente humano, pedí "hablar con un asesor" o esperá a que el bot te derive automáticamente.`,
+    summary: 'Canales de contacto: chat, WhatsApp, email o teléfono',
+    category: 'Canales de Contacto',
+    tags: ['contacto', 'WhatsApp', 'chat', 'email'],
+    keywords: ['contactar', 'consulta', 'comunicarse', 'canal', 'cómo escribir'],
+    variants: ['cómo los contacto', 'por dónde escribo', 'tienen WhatsApp', 'cómo inicio una consulta'],
     sourceType: 'FAQ',
     status: 'ACTIVE',
     isActive: true,
@@ -66,30 +73,32 @@ Recuerda tener tu RUT y obra social a mano.`,
   {
     id: 'kb-3',
     tenantId: 'tenant-1',
-    title: 'Obras Sociales Aceptadas',
-    content: `Nuestra clínica acepta las principales obras sociales y prepagas del país:
+    title: 'Medios de Pago Aceptados',
+    content: `Aceptamos los siguientes métodos de pago:
 
-**Principales:**
-- Banmedica
-- Consalud
-- Cruz Blanca
-- Mas Vida
-- Nueva Mas Vida
-- Riobank
-- San Lorenzo
-- Isapre Vida
+**Tarjetas:**
+- Crédito: Visa, Mastercard, American Express
+- Débito: Visa Débito, Mastercard Débito
 
-**Requisitos:**
-- Credencial vigente
-- Orden médica (para consultas especializadas)
-- Identificación con foto
+**Transferencias:**
+- Transferencia bancaria (CBU/CVU)
+- Alias de cuenta
 
-Consulta spesifikaciones con tu obra social antes deattenderte.`,
-    summary: 'Lista de obras sociales aceptadas y requisitos',
-    category: 'Coberturas y Obras Sociales',
-    tags: ['obra social', 'prepaga', 'cobertura', 'aseguradora'],
-    keywords: ['obra social', 'prepaga', 'cobertura', 'aseguradora', 'aceptan'],
-    variants: ['qué obras sociales aceptan', 'tienen con mi isapre', 'aceptan banmedica', 'conviene con mi seguro'],
+**Plataformas digitales:**
+- Mercado Pago
+- PayPal
+- Stripe
+
+**Para empresas:**
+- Factura a 30/60 días (previa aprobación crediticia)
+- Órdenes de compra
+
+**Nota:** Para pagos en efectivo, consultá disponibilidad en tu zona.`,
+    summary: 'Tarjetas, transferencias, Mercado Pago, PayPal. Facturas para empresas.',
+    category: 'Medios de Pago',
+    tags: ['pago', 'tarjeta', 'transferencia', 'factura'],
+    keywords: ['pago', 'tarjeta', 'efectivo', 'transferencia', 'cómo pago', 'medios'],
+    variants: ['cómo puedo pagar', 'aceptan tarjeta', 'tienen Mercado Pago', 'puedo pagar en cuotas'],
     sourceType: 'FAQ',
     status: 'ACTIVE',
     isActive: true,
@@ -103,29 +112,27 @@ Consulta spesifikaciones con tu obra social antes deattenderte.`,
   {
     id: 'kb-4',
     tenantId: 'tenant-1',
-    title: 'Cómo Retirar Resultados de Laboratorio',
-    content: `Tienes tres opciones para retirar tus resultados de estudios de laboratorio:
+    title: 'Cómo Hacer el Seguimiento de tu Solicitud',
+    content: `Podés consultar el estado de tu solicitud o pedido de tres formas:
 
-**1. Presencial:**
-- Acude a cualquiera de nuestras sedes
-- Presenta tu identificación y comprobante
+**1. Por chat:**
+Escribinos con tu número de caso o número de pedido y te informamos el estado en tiempo real.
 
-**2. Email:**
-- Solicita el envío al momento del estudio
-- Recibirás un PDF seguro
+**2. Por email:**
+Recibirás actualizaciones automáticas en el email que registraste. Revisá también tu carpeta de spam.
 
-**3. Portal Web:**
-- Ingresa a www.clinicasanjuan.cl/resultados
-- Descarga con tu RUT y contraseña
+**3. Por teléfono:**
+Llamá al 0800-000-0000 con tu número de caso a mano.
 
-**Tiempos:**
-- Sangre/orina: 24-48 horas hábiles
-- Estudios complejos: 72-96 horas hábiles`,
-    summary: 'Opciones para retirar resultados: Presencial, Email o Portal Web',
-    category: 'Resultados',
-    tags: ['resultados', 'laboratorio', 'retirar', 'estudios'],
-    keywords: ['resultado', 'estudio', 'laboratorio', 'retirar', 'buscar'],
-    variants: ['dónde busco mis resultados', 'cuándo estar listo', 'como obtener mis análisis', 'puedo verlos por internet'],
+**Tiempos de respuesta:**
+- Consultas generales: hasta 4 horas hábiles
+- Casos técnicos: hasta 24 horas hábiles
+- Reclamos: hasta 72 horas hábiles`,
+    summary: 'Seguimiento por chat, email o teléfono. Respuesta en 4-72 hs según tipo.',
+    category: 'Seguimiento de Solicitudes',
+    tags: ['seguimiento', 'estado', 'pedido', 'caso'],
+    keywords: ['seguimiento', 'estado', 'dónde está', 'cuándo', 'mi pedido', 'mi caso'],
+    variants: ['cómo sé cómo está mi pedido', 'dónde veo el estado', 'número de caso', 'cuándo me responden'],
     sourceType: 'FAQ',
     status: 'ACTIVE',
     isActive: true,
@@ -139,29 +146,31 @@ Consulta spesifikaciones con tu obra social antes deattenderte.`,
   {
     id: 'kb-5',
     tenantId: 'tenant-1',
-    title: 'Protocolo de Urgencias',
-    content: `Si tienes una emergencia médica, sigue estos pasos:
+    title: 'Política de Devoluciones y Reembolsos',
+    content: `Si no estás satisfecho con tu compra o servicio, podés solicitar una devolución dentro de los plazos establecidos:
 
-**1. Llama inmediatamente:**
-- Teléfono de emergencia: 600 500 9999
-- Disponible 24/7
+**Plazos:**
+- Productos físicos: 30 días desde la recepción
+- Servicios digitales: 14 días desde la contratación
+- Suscripciones: antes del próximo ciclo de facturación
 
-**2. Describe los síntomas:**
-- Dolor en el pecho
-- Dificultad para respirar
-- Sangrado abundante
-- Pérdida de conciencia
+**Cómo solicitar:**
+1. Contactanos por chat o email
+2. Indicá el motivo de la devolución
+3. Te enviaremos instrucciones en 24 horas hábiles
 
-**3. Acude a urgencias:**
-- Sede central: Av. Principal 123, Santiago
--open 24 horas
+**Condiciones:**
+- El producto debe estar en su estado original
+- Incluir comprobante de compra
+- Devoluciones por defecto de fábrica tienen prioridad
 
-**Importante:** No intentes conducir si estás en estado crítico. Llama a ambulancia.`,
-    summary: 'Pasos en caso de emergencia: Llamar, describir síntomas, acudir a urgencias',
-    category: 'Urgencias',
-    tags: ['urgencia', 'emergencia', 'emergencia médica', 'auxilio'],
-    keywords: ['urgencia', 'emergencia', 'ayuda', 'auxilio', 'emergencia'],
-    variants: ['tengo una emergencia', 'qué hago si me pasa algo', 'a dónde voy si me siento mal', 'número de emergencia'],
+**Reembolso:**
+El importe se acredita en 5-10 días hábiles en el mismo medio de pago utilizado.`,
+    summary: 'Devoluciones en 30 días (productos) o 14 días (servicios). Reembolso en 5-10 días.',
+    category: 'Políticas y Garantías',
+    tags: ['devolución', 'reembolso', 'garantía', 'política'],
+    keywords: ['devolución', 'devolver', 'reembolso', 'garantía', 'cambio', 'no sirve'],
+    variants: ['cómo devuelvo algo', 'quiero mi reembolso', 'política de cambio', 'tienen garantía'],
     sourceType: 'POLICY',
     status: 'ACTIVE',
     isActive: true,
@@ -175,32 +184,29 @@ Consulta spesifikaciones con tu obra social antes deattenderte.`,
   {
     id: 'kb-6',
     tenantId: 'tenant-1',
-    title: 'Estudios de Laboratorio Disponibles',
-    content: `Realizamos los siguientes estudios de laboratorio:
+    title: 'Problemas Frecuentes de Acceso y Login',
+    content: `Si tenés problemas para acceder a tu cuenta, seguí estos pasos:
 
-**Comunes:**
-- Análisis de sangre completo
-- Perfil bioquímico
-- Hemoglobina glucosilada
-- Perfil lipídico
-- Función tiroidea
-- Marcadores tumorales
+**No puedo iniciar sesión:**
+1. Verificá que el email y contraseña sean correctos
+2. Usá "Olvidé mi contraseña" para restablecerla
+3. Revisá que no tengas Bloqueador de JavaScript activo
 
-**Especiales:**
-- Pruebas de alergia
-- Estudios hormonales
-- Biopsias
-- Papanicolau
+**Cuenta bloqueada:**
+Después de 5 intentos fallidos la cuenta se bloquea por 30 minutos. Si persiste, contactanos.
 
-**Preparación:**
-- Algunos estudios requieren ayuno de 8-12 horas
-- others requieren suspensión de medicamentos
-- Consulta específica al momento de agendar`,
-    summary: 'Listado de estudios de laboratorio disponibles y preparación',
-    category: 'Estudios y Exámenes',
-    tags: ['estudio', 'laboratorio', 'examen', 'análisis'],
-    keywords: ['estudio', 'laboratorio', 'examen', 'análisis', 'prueba'],
-    variants: ['qué estudios hacen', 'qué анализы pueden hacerme', 'tienen análisis de'],
+**No recibo el email de verificación:**
+- Revisá carpeta de spam o correo no deseado
+- Verificá que el email sea correcto
+- Solicitá reenvío desde la pantalla de login
+
+**Otros problemas:**
+Contactanos por chat indicando el mensaje de error exacto.`,
+    summary: 'Pasos para problemas de login, cuenta bloqueada o email de verificación',
+    category: 'Soporte Técnico',
+    tags: ['login', 'contraseña', 'acceso', 'cuenta'],
+    keywords: ['no puedo entrar', 'olvidé contraseña', 'login', 'acceso', 'cuenta bloqueada'],
+    variants: ['no puedo iniciar sesión', 'olvidé mi contraseña', 'mi cuenta está bloqueada', 'no recibo el email'],
     sourceType: 'ARTICLE',
     status: 'ACTIVE',
     isActive: true,
@@ -214,38 +220,42 @@ Consulta spesifikaciones con tu obra social antes deattenderte.`,
   {
     id: 'kb-7',
     tenantId: 'tenant-1',
-    title: 'Documentación Requerida para Atención',
-    content: `Para	atenderte en nuestra clínica necesitas:
+    title: 'Planes Disponibles y Diferencias',
+    content: `Ofrecemos tres planes según el tamaño y necesidades de tu empresa:
 
-**Pacientes nuevos:**
-- Identificación con foto (RUT o Pasaporte)
-- Comprobante de domicilio reciente
-- Orden médica (si corresponde)
-- Credencial de obra social/prepaga
+**Plan Starter (gratuito)**
+- Hasta 3 agentes activos
+- 500 conversaciones/mes
+- Chat web + WhatsApp
+- Reportes básicos
+- Soporte por email
 
-**Menores de edad:**
-- Identificación del padre/madre/tutor
-- Autorización firmada
+**Plan Business ($99/mes)**
+- Hasta 20 agentes
+- Conversaciones ilimitadas
+- Todos los canales
+- Reportes avanzados y exportaciones
+- IA conversacional incluida
+- Soporte prioritario
 
-**Embarazadas:**
-- Carnet de prenatal
-- Ecografías previas
-
-**Extranjeros:**
-- Pasaporte
-- Visa vigente
-- Seguro de salud internacional`,
-    summary: 'Documentos necesarios según tipo de paciente',
-    category: 'Documentación',
-    tags: ['documentación', 'requisitos', 'identificación', 'papeles'],
-    keywords: ['documento', 'requisito', 'qué llevar', 'qué papeles'],
-    variants: ['qué tengo que llevar', 'qué documentos necesito', 'qué debo presentar'],
-    sourceType: 'POLICY',
+**Plan Enterprise (a convenir)**
+- Agentes ilimitados
+- IA avanzada y personalizable
+- Integraciones API y webhooks
+- SLA garantizado
+- Gerente de cuenta dedicado
+- Onboarding personalizado`,
+    summary: 'Tres planes: Starter (gratis), Business ($99/mes), Enterprise (custom)',
+    category: 'Planes y Precios',
+    tags: ['plan', 'precio', 'starter', 'business', 'enterprise'],
+    keywords: ['plan', 'precio', 'cuánto cuesta', 'opciones', 'diferencia entre planes'],
+    variants: ['cuánto cuesta', 'qué planes tienen', 'diferencia entre planes', 'qué incluye cada plan'],
+    sourceType: 'FAQ',
     status: 'ACTIVE',
     isActive: true,
-    isFeatured: false,
+    isFeatured: true,
     views: 987,
-    helpful: 123,
+    helpful: 345,
     notHelpful: 8,
     createdAt: new Date('2024-02-01'),
     updatedAt: new Date('2024-02-15'),
@@ -253,29 +263,35 @@ Consulta spesifikaciones con tu obra social antes deattenderte.`,
   {
     id: 'kb-8',
     tenantId: 'tenant-1',
-    title: 'Especialidades Médicas Disponibles',
-    content: `Contamos con las siguientes especialidades médicas:
+    title: 'Cómo Exportar Reportes y Métricas',
+    content: `Podés exportar los datos de tu plataforma en varios formatos:
 
-- Medicina General
-- Cardiología
-- Dermatología
-- Gastroenterología
-- Ginecología
-- Neurología
-- Oftalmología
-- Ortopedia
-- Pediatría
-- Psiquiatría
-- Urología
-- Vascular
+**Formatos disponibles:**
+- CSV (compatible con Excel y Google Sheets)
+- PDF (para presentaciones)
+- Excel (.xlsx)
+- JSON (para integraciones)
 
-Cada especialidad tiene horarios específicos. Consulta al momento de solicitar tu turno.`,
-    summary: 'Listado de especialidades médicas disponibles',
-    category: 'Turnos y Citas',
-    tags: ['especialidad', 'médico', 'doctor', 'especialista'],
-    keywords: ['especialidad', 'médico', 'doctor', 'especialista'],
-    variants: ['qué especialidades tienen', 'qué médicos tienen', 'tienen cardiólogo'],
-    sourceType: 'FAQ',
+**Qué podés exportar:**
+- Conversaciones y mensajes
+- Tickets y casos
+- Métricas de rendimiento de agentes
+- CSAT y satisfacción del cliente
+- Reporte de flujos y automatizaciones
+
+**Cómo hacerlo:**
+1. Ir a Dashboard → Exportar
+2. Seleccionar el rango de fechas
+3. Elegir el tipo de reporte
+4. Hacer clic en "Generar y descargar"
+
+Los reportes grandes se procesan en segundo plano y se envían por email.`,
+    summary: 'Exportá conversaciones, tickets y métricas en CSV, PDF o Excel',
+    category: 'Reportes y Métricas',
+    tags: ['reporte', 'exportar', 'métricas', 'CSV', 'Excel'],
+    keywords: ['exportar', 'reporte', 'descargar', 'métricas', 'CSV', 'PDF'],
+    variants: ['cómo exporto datos', 'puedo descargar reportes', 'cómo genero un informe', 'exportar conversaciones'],
+    sourceType: 'ARTICLE',
     status: 'ACTIVE',
     isActive: true,
     isFeatured: false,
@@ -288,9 +304,9 @@ Cada especialidad tiene horarios específicos. Consulta al momento de solicitar 
 ];
 
 export const mockTags = [
-  'horarios', 'turno', 'cita', 'emergencia', 'resultados', 
-  'laboratorio', 'obra social', 'cobertura', 'documentación',
-  'estudio', 'especialidad', 'urgencia', 'sede'
+  'horarios', 'contacto', 'WhatsApp', 'pago', 'facturación',
+  'seguimiento', 'pedido', 'devolución', 'garantía',
+  'soporte', 'login', 'acceso', 'plan', 'precio', 'reporte'
 ];
 
 export const knowledgeStats: KnowledgeStats = {
@@ -299,14 +315,14 @@ export const knowledgeStats: KnowledgeStats = {
   drafts: 3,
   featured: 6,
   byCategory: {
-    'Horarios de Atención': 4,
-    'Turnos y Citas': 6,
-    'Coberturas y Obras Sociales': 3,
-    'Estudios y Exámenes': 5,
-    'Resultados': 2,
-    'Urgencias': 2,
-    'Sedes y Ubicación': 3,
-    'Documentación': 4,
+    'Horarios de Atención': 3,
+    'Canales de Contacto': 4,
+    'Medios de Pago': 3,
+    'Seguimiento de Solicitudes': 4,
+    'Políticas y Garantías': 3,
+    'Soporte Técnico': 3,
+    'Planes y Precios': 3,
+    'Reportes y Métricas': 3,
   },
   bySource: {
     'FAQ': 15,

@@ -1,5 +1,5 @@
-import AlertasPage from '../../alertas/page';
+import { redirect } from 'next/navigation';
 
 export default function DashboardAlertasPage() {
-  return <AlertasPage />;
+  redirect('/dashboard/alerts');
 }

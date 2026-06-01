@@ -28,7 +28,7 @@ const metrics = [
   },
   {
     icon: Users,
-    title: 'Pacientes únicos',
+    title: 'Clientes únicos',
     sub: '/mes',
     value: '1,523',
     change: '+8%',
@@ -186,7 +186,7 @@ export function Analytics() {
               <div className="bg-gray-800 rounded-2xl p-4">
                 <p className="text-gray-400 text-sm mb-2">Intenciones más frecuentes</p>
                 <div className="space-y-2">
-                  {['Agendar turno', 'Consultar turno', 'Información'].map((intent, i) => (
+                  {['Consulta de precio', 'Estado de pedido', 'Información general'].map((intent, i) => (
                     <div key={intent} className="flex justify-between text-sm">
                       <span className="text-white">{intent}</span>
                       <span className="text-gray-400">{85 - i * 20}%</span>

@@ -118,9 +118,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   const variantConfig = variants[variant];
   const weightClass = weights[weight];
   
-  const radiusClass = rounded === true 
-    ? 'rounded-lg' 
-    : radiusMap[rounded] || 'rounded-lg';
+  const radiusClass = rounded === true
+    ? 'rounded-lg'
+    : (typeof rounded === 'string' ? radiusMap[rounded] : undefined) || 'rounded-lg';
   
   return (
     <button

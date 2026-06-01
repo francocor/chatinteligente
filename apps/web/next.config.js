@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ['localhost', 'images.unsplash.com'],
   },
   experimental: {
-    typedRoutes: true,
+    typedRoutes: false,
   },
   async redirects() {
     return [];

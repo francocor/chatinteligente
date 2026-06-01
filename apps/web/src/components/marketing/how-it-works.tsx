@@ -1,36 +1,29 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { MessageCircle, Brain, Users, BarChart3, ArrowRight, CheckCircle, Zap } from 'lucide-react';
+import { MessageCircle, Brain, BarChart3, ArrowRight, CheckCircle, Zap } from 'lucide-react';
 
 const steps = [
   {
     number: '01',
-    title: 'Paciente contacta',
-    description: 'El paciente inicia una conversación desde tu web, WhatsApp o email. El sistema detecta inmediatamente el canal y crea una sesión.',
+    title: 'El cliente escribe',
+    description: 'Tu cliente inicia una conversación desde WhatsApp, tu web o email. El sistema detecta el canal automáticamente y abre la sesión.',
     icon: MessageCircle,
-    details: ['Web widget embebible', 'WhatsApp Business', 'Email automatizado'],
+    details: ['Web widget embebible', 'WhatsApp Business', 'Email y más canales'],
   },
   {
     number: '02',
-    title: 'IA analiza y responde',
-    description: 'Nuestro motor de IA interpreta la intención del paciente, consulta la base de conocimientos y responde de forma instantánea y personalizada.',
+    title: 'La IA responde — o deriva',
+    description: 'El motor de IA entiende el mensaje, consulta tu base de conocimientos y responde al instante. Si el caso lo requiere, escala al agente correcto con todo el contexto.',
     icon: Brain,
-    details: ['Lenguaje natural', 'Base de conocimientos', 'Respuestas personalizadas'],
+    details: ['Lenguaje natural', 'Base de conocimientos', 'Derivación inteligente'],
   },
   {
     number: '03',
-    title: 'Derivación inteligente',
-    description: 'Si el caso requiere atención humana, el sistema deriva automáticamente al agente disponible con las habilidades adecuadas.',
-    icon: Users,
-    details: ['Colas por especialidad', 'Distribución automática', 'Contexto compartido'],
-  },
-  {
-    number: '04',
-    title: 'Análisis continuo',
-    description: 'Cada conversación se analiza, mide y reporta. Obtén insights para mejorar constantemente la experiencia de tus pacientes.',
+    title: 'Tu equipo gestiona y mide',
+    description: 'Todas las conversaciones en un dashboard unificado. Tu equipo responde, asigna y cierra casos. Cada interacción genera métricas accionables.',
     icon: BarChart3,
-    details: ['Métricas en tiempo real', 'Reportes automatizados', 'Optimización continua'],
+    details: ['Métricas en tiempo real', 'Reportes automatizados', 'Mejora continua con IA'],
   },
 ];
 
@@ -49,11 +42,11 @@ export function HowItWorks() {
               Cómo Funciona
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              En 4 pasos hacia la excelencia
+              Tres pasos. Toda la potencia.
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Un flujo automático que combina inteligencia artificial con atención humana 
-              para crear la mejor experiencia de paciente.
+              Un flujo automático que combina inteligencia artificial con atención humana
+              para crear la mejor experiencia de cliente.
             </p>
           </motion.div>
         </div>
@@ -63,20 +56,20 @@ export function HowItWorks() {
           {/* Connecting Line */}
           <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-200 via-primary-500 to-primary-200 -translate-y-1/2" />
 
-          <div className="grid lg:grid-cols-4 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8">
             {steps.map((step, index) => (
               <motion.div
                 key={step.number}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.15 }}
                 className="relative"
               >
                 {/* Card */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 relative z-10 hover:shadow-xl transition-shadow">
+                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 relative z-10 hover:shadow-xl transition-all hover:-translate-y-1 duration-300">
                   {/* Number Badge */}
-                  <div className="absolute -top-4 left-6 w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <div className="absolute -top-4 left-6 w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/25">
                     <span className="text-white font-bold">{step.number}</span>
                   </div>
 
@@ -87,7 +80,7 @@ export function HowItWorks() {
 
                   {/* Content */}
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{step.description}</p>
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{step.description}</p>
 
                   {/* Details */}
                   <ul className="space-y-2">
@@ -123,7 +116,7 @@ export function HowItWorks() {
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-primary-50 rounded-full">
             <Zap className="w-5 h-5 text-primary-500" />
             <span className="text-primary-700 font-medium">
-              Configuración en menos de 5 minutos
+              Configuración en menos de 5 minutos — sin código
             </span>
           </div>
         </motion.div>

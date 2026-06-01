@@ -36,7 +36,7 @@ const features = [
   {
     icon: Languages,
     title: 'Multi-idioma Nativo',
-    description: 'El chatbot detecta el idioma y responde en el mismo idioma del paciente.',
+    description: 'El chatbot detecta el idioma y responde en el mismo idioma del cliente.',
     details: ['Español, Inglés, Portugués', 'Cambio automático', 'Personalización por idioma'],
   },
   {
@@ -48,7 +48,7 @@ const features = [
   {
     icon: Zap,
     title: 'Tiempo Real',
-    description: 'Respuestas en menos de 2 segundos. Los pacientes nunca esperan.',
+    description: 'Respuestas en menos de 2 segundos. Los clientes nunca esperan.',
     details: ['<2s respuesta', 'Procesamiento paralelo', 'Escala infinita'],
   },
 ];
@@ -99,7 +99,7 @@ export function HybridChatbot() {
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-white/20 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
-                    <p className="text-white text-sm">Hola! Necesito información sobre neurología</p>
+                    <p className="text-white text-sm">¡Hola! ¿En qué puedo ayudarte hoy?</p>
                   </div>
                 </div>
 
@@ -108,7 +108,7 @@ export function HybridChatbot() {
                     <span className="text-primary-600 text-xs font-bold">MG</span>
                   </div>
                   <div className="bg-white rounded-2xl rounded-tr-sm p-3 max-w-[80%]">
-                    <p className="text-gray-700 text-sm">Tengo dolor de cabeza frecuente desde hace 2 semanas</p>
+                    <p className="text-gray-700 text-sm">Quiero saber qué plan conviene para un equipo de 20 personas</p>
                   </div>
                 </div>
 
@@ -118,12 +118,12 @@ export function HybridChatbot() {
                   </div>
                   <div className="bg-white/20 rounded-2xl rounded-tl-sm p-3 max-w-[80%]">
                     <p className="text-white text-sm mb-2">
-                      Entiendo. Para dolor de cabeza recurrente, te recomiendo evaluación con 
-                      nuestro neurólogo. Tenemos disponibilidad esta semana.
+                      Para 20 personas, el Plan Business es ideal. Incluye agentes ilimitados,
+                      todos los canales y analíticas avanzadas. ¿Agendo una demo personalizada?
                     </p>
                     <div className="flex gap-2 mt-2">
-                      <span className="px-2 py-1 bg-primary-400/50 rounded text-xs">Jue 10:00</span>
-                      <span className="px-2 py-1 bg-primary-400/50 rounded text-xs">Vie 16:00</span>
+                      <span className="px-2 py-1 bg-primary-400/50 rounded text-xs">Lun 10:00</span>
+                      <span className="px-2 py-1 bg-primary-400/50 rounded text-xs">Mar 15:00</span>
                     </div>
                   </div>
                 </div>

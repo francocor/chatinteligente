@@ -12,7 +12,7 @@ import { createPortal } from 'react-dom';
 
 /* ---------- Types ---------- */
 type ModalSize = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
-type ModalVariant = 'default' | 'centered' | 'bottom' | 'right' | 'confirm';
+type ModalVariant = 'default' | 'centered' | 'bottom' | 'right' | 'confirm' | 'full';
 type ModalAnimation = 'fade' | 'slide' | 'scale' | 'none';
 
 /* ---------- Size Config ---------- */

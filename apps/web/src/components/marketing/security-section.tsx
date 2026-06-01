@@ -62,8 +62,8 @@ export function Security() {
               Seguridad enterprise diseñada desde el núcleo
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              Los datos de pacientes son extremadamente sensibles. 
-              Designed desde cero con los estándares de seguridad más exigentes.
+              Tus datos empresariales son altamente sensibles.
+              Diseñado desde cero con los estándares de seguridad más exigentes.
             </p>
 
             <div className="space-y-4">
@@ -94,7 +94,7 @@ export function Security() {
             
             <div className="space-y-3">
               {[
-                { time: '10:32:15', action: ' login', user: 'admin@clinic.com', ip: '192.168.1.100' },
+                { time: '10:32:15', action: ' login', user: 'admin@empresa.demo', ip: '192.168.1.100' },
                 { time: '10:32:20', action: ' VIEW conversation', user: 'admin', id: 'conv_123' },
                 { time: '10:33:45', action: ' EXPORT report', user: 'admin', format: 'CSV' },
                 { time: '10:35:02', action: ' UPDATE settings', user: 'admin', field: 'whatsapp' },

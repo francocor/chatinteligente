@@ -11,7 +11,7 @@ import { twMerge } from 'tailwind-merge';
 type InputSize = 'sm' | 'md' | 'lg';
 type InputState = 'default' | 'error' | 'success' | 'warning' | 'disabled';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: InputSize;
   state?: InputState;
   label?: string;

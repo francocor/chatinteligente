@@ -77,9 +77,9 @@ export const mockChannelMetrics: ChannelMetrics[] = [
 
 export const mockDepartmentMetrics: DepartmentMetrics[] = [
   { department: 'Atención al Cliente', conversations: 1823, resolved: 1654, avgResolutionTime: 145000 },
-  { department: 'Turnos', conversations: 1234, resolved: 1123, avgResolutionTime: 98000 },
-  { department: 'Laboratorio', conversations: 876, resolved: 823, avgResolutionTime: 76000 },
-  { department: 'Urgencias', conversations: 342, resolved: 312, avgResolutionTime: 23000 },
+  { department: 'Ventas', conversations: 1234, resolved: 1123, avgResolutionTime: 98000 },
+  { department: 'Soporte Técnico', conversations: 876, resolved: 823, avgResolutionTime: 76000 },
+  { department: 'Operaciones', conversations: 342, resolved: 312, avgResolutionTime: 23000 },
   { department: 'Cobranzas', conversations: 248, resolved: 189, avgResolutionTime: 210000 },
 ];
 
@@ -113,23 +113,23 @@ export const mockDailyData: DailyData[] = Array.from({ length: 30 }, (_, i) => {
 });
 
 export const mockIntentMetrics: IntentMetrics[] = [
-  { intent: 'solicitar_turno', count: 1245, percentage: 27.5, avgConfidence: 0.89, resolutionRate: 82.3 },
+  { intent: 'consulta_precio', count: 1245, percentage: 27.5, avgConfidence: 0.89, resolutionRate: 82.3 },
   { intent: 'consultar_horario', count: 876, percentage: 19.4, avgConfidence: 0.92, resolutionRate: 94.1 },
-  { intent: 'consultar_resultado', count: 543, percentage: 12.0, avgConfidence: 0.85, resolutionRate: 78.5 },
-  { intent: 'informacion_cobertura', count: 423, percentage: 9.4, avgConfidence: 0.88, resolutionRate: 86.2 },
-  { intent: 'especialidades', count: 312, percentage: 6.9, avgConfidence: 0.91, resolutionRate: 92.8 },
-  { intent: 'urgencia', count: 234, percentage: 5.2, avgConfidence: 0.95, resolutionRate: 98.2 },
+  { intent: 'estado_pedido', count: 543, percentage: 12.0, avgConfidence: 0.85, resolutionRate: 78.5 },
+  { intent: 'medios_pago', count: 423, percentage: 9.4, avgConfidence: 0.88, resolutionRate: 86.2 },
+  { intent: 'info_planes', count: 312, percentage: 6.9, avgConfidence: 0.91, resolutionRate: 92.8 },
+  { intent: 'soporte_urgente', count: 234, percentage: 5.2, avgConfidence: 0.95, resolutionRate: 98.2 },
   { intent: 'hablar_humano', count: 198, percentage: 4.4, avgConfidence: 0.78, resolutionRate: 100 },
   { intent: 'otro', count: 692, percentage: 15.3, avgConfidence: 0.65, resolutionRate: 45.2 },
 ];
 
 export const mockTopicMetrics: TopicMetrics[] = [
-  { topic: 'Turnos y Citas', count: 1567, percentage: 34.7 },
-  { topic: 'Horarios', count: 876, percentage: 19.4 },
-  { topic: 'Resultados', count: 654, percentage: 14.5 },
-  { topic: 'Obras Sociales', count: 543, percentage: 12.0 },
-  { topic: 'Especialidades', count: 432, percentage: 9.6 },
-  { topic: 'Urgencias', count: 234, percentage: 5.2 },
+  { topic: 'Consultas de precio', count: 1567, percentage: 34.7 },
+  { topic: 'Horarios de atención', count: 876, percentage: 19.4 },
+  { topic: 'Estado de pedido', count: 654, percentage: 14.5 },
+  { topic: 'Medios de pago', count: 543, percentage: 12.0 },
+  { topic: 'Soporte técnico', count: 432, percentage: 9.6 },
+  { topic: 'Reclamos', count: 234, percentage: 5.2 },
   { topic: 'Otros', count: 217, percentage: 4.8 },
 ];
 
@@ -221,24 +221,24 @@ export const mockDashboardKPIs: DashboardKPI[] = [
 
 export const strategicKPIs = {
   eficiencia: [
-    { metric: 'Tiempo promedio de resolución', target: 120, current: 180, unit: 'segundos', status: 'warning' as const },
-    { metric: 'Tasa de resolución en primer contacto', target: 75, current: 71.8, unit: '%', status: 'warning' as const },
-    { metric: 'Productividad por agente', target: 50, current: 42, unit: 'conversaciones', status: 'warning' as const },
+    { metric: 'Tiempo promedio de resolución', target: 120, current: 180, unit: 'segundos', status: 'warning' },
+    { metric: 'Tasa de resolución en primer contacto', target: 75, current: 71.8, unit: '%', status: 'warning' },
+    { metric: 'Productividad por agente', target: 50, current: 42, unit: 'conversaciones', status: 'warning' },
   ],
   satisfaccion: [
-    { metric: 'CSAT promedio', target: 4.5, current: 4.3, unit: '/5', status: 'good' as const },
-    { metric: 'NPS (Net Promoter Score)', target: 50, current: 42, unit: 'puntos', status: 'good' as const },
-    { metric: 'Tasa de quejas', target: 2, current: 3.2, unit: '%', status: 'critical' as const },
+    { metric: 'CSAT promedio', target: 4.5, current: 4.3, unit: '/5', status: 'good' },
+    { metric: 'NPS (Net Promoter Score)', target: 50, current: 42, unit: 'puntos', status: 'good' },
+    { metric: 'Tasa de quejas', target: 2, current: 3.2, unit: '%', status: 'critical' },
   ],
   automatizacion: [
-    { metric: 'Automatización de consultas', target: 80, current: 71.8, unit: '%', status: 'good' as const },
-    { metric: 'Tasa de derivación a humano', target: 10, current: 18.9, unit: '%', status: 'critical' as const },
-    { metric: 'Accuracy del NLP', target: 90, current: 84, unit: '%', status: 'warning' as const },
+    { metric: 'Automatización de consultas', target: 80, current: 71.8, unit: '%', status: 'good' },
+    { metric: 'Tasa de derivación a humano', target: 10, current: 18.9, unit: '%', status: 'critical' },
+    { metric: 'Accuracy del NLP', target: 90, current: 84, unit: '%', status: 'warning' },
   ],
   operasional: [
-    { metric: 'Cumplimiento de SLA', target: 95, current: 89.2, unit: '%', status: 'warning' as const },
-    { metric: 'Tiempo de espera promedio', target: 30, current: 45, unit: 'segundos', status: 'warning' as const },
-    { metric: 'Tasa de abandonos', target: 3, current: 3.1, unit: '%', status: 'good' as const },
+    { metric: 'Cumplimiento de SLA', target: 95, current: 89.2, unit: '%', status: 'warning' },
+    { metric: 'Tiempo de espera promedio', target: 30, current: 45, unit: 'segundos', status: 'warning' },
+    { metric: 'Tasa de abandonos', target: 3, current: 3.1, unit: '%', status: 'good' },
   ],
 };
 

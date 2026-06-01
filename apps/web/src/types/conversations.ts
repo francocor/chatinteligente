@@ -39,6 +39,10 @@ export interface Contact {
   createdAt: Date;
 }
 
+export type AgentStatus = 'ONLINE' | 'AWAY' | 'BUSY' | 'OFFLINE' | 'ON_BREAK';
+export type MessageDirection = 'INBOUND' | 'OUTBOUND' | 'INTERNAL';
+export type MessageContentType = 'TEXT' | 'IMAGE' | 'AUDIO' | 'VIDEO' | 'DOCUMENT' | 'QUICK_REPLY' | 'BUTTONS';
+
 export interface Agent {
   id: string;
   userId: string;
@@ -50,7 +54,7 @@ export interface Agent {
     avatar?: string;
     email: string;
   };
-  status: 'ONLINE' | 'AWAY' | 'BUSY' | 'OFFLINE' | 'ON_BREAK';
+  status: AgentStatus;
   maxConcurrentConversations: number;
   currentConversations: number;
 }

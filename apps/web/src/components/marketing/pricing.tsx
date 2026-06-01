@@ -8,7 +8,7 @@ const plans = [
     name: 'Básico',
     price: '$99',
     period: '/mes',
-    description: 'Para clínicas pequeñas',
+    description: 'Para equipos pequeños',
     highlight: false,
     features: [
       '500 conversaciones/mes',
@@ -24,7 +24,7 @@ const plans = [
     name: 'Profesional',
     price: '$299',
     period: '/mes',
-    description: 'Para clínicas en crecimiento',
+    description: 'Para empresas en crecimiento',
     highlight: true,
     features: [
       '2,500 conversaciones/mes',

@@ -120,6 +120,24 @@ export default function ExportsPage() {
     return `${minutes}m ${seconds % 60}s`;
   };
 
+  const handleDownloadExport = (item: ExportHistoryItem) => {
+    const count = Math.min(item.recordCount ?? 10, 20);
+    const headers = 'Conversación,Contacto,Canal,Estado,Agente,Fecha';
+    const rows = Array.from({ length: count }, (_, i) =>
+      `#${1000 + i},Contacto Demo ${i + 1},WhatsApp,RESOLVED,Agente Demo,${new Date(Date.now() - i * 86400000).toLocaleDateString('es-AR')}`
+    );
+    const csv = [headers, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${item.reportName.replace(/[\s/]/g, '_')}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleGenerate = () => {
     setGenerating(true);
     setTimeout(() => {
@@ -136,8 +154,9 @@ export default function ExportsPage() {
         createdAt: new Date(),
         completedAt: new Date(),
       };
-      setHistory([newExport, ...history]);
+      setHistory((prev) => [newExport, ...prev]);
       setActiveTab('history');
+      handleDownloadExport(newExport);
     }, 2000);
   };
 
@@ -311,9 +330,9 @@ export default function ExportsPage() {
                     <select className="w-full px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
                       <option value="">Todos los departamentos</option>
                       <option value="1">Atención al Cliente</option>
-                      <option value="2">Turnos</option>
-                      <option value="3">Laboratorio</option>
-                      <option value="4">Urgencias</option>
+                      <option value="2">Ventas</option>
+                      <option value="3">Soporte Técnico</option>
+                      <option value="4">Operaciones</option>
                     </select>
                   </div>
                   <div>
@@ -412,7 +431,11 @@ export default function ExportsPage() {
                         <p className="text-xs text-neutral-500">{item.createdBy.displayName}</p>
                       </div>
                       {item.status === 'COMPLETED' && (
-                        <button className="p-2 hover:bg-neutral-100 rounded-lg" title="Descargar">
+                        <button
+                          onClick={() => handleDownloadExport(item)}
+                          className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg transition-colors"
+                          title="Descargar CSV"
+                        >
                           <Download className="w-4 h-4 text-neutral-600" />
                         </button>
                       )}

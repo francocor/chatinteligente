@@ -1,47 +1,47 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { 
-  MessageCircle, 
-  Phone, 
-  Image, 
-  FileText, 
-  CheckCircle, 
+import {
+  MessageCircle,
+  Phone,
+  Image,
+  FileText,
+  CheckCircle,
   ArrowRight,
   MessageSquare,
   Send,
   Users,
-  Clock
+  Clock,
 } from 'lucide-react';
 
 const features = [
   {
     icon: MessageSquare,
     title: 'Mensajes bidireccionales',
-    description: 'Envía y recibe mensajes de WhatsApp directamente desde la plataforma.',
+    description: 'Enviá y recibí mensajes de WhatsApp directamente desde la plataforma, sin cambiar de app.',
   },
   {
     icon: Image,
     title: 'Multimedia completo',
-    description: 'Imágenes, documentos, audios y videos. Comparte lo que necesites.',
+    description: 'Imágenes, documentos, audios y videos. Compartí lo que necesites con tus clientes.',
   },
   {
     icon: FileText,
-    title: 'Plantillas oficiales',
-    description: 'Usa las plantillas aprobadas de Meta para notificaciones automáticas.',
+    title: 'Plantillas oficiales de Meta',
+    description: 'Usá las plantillas aprobadas para enviar notificaciones proactivas a tus clientes.',
   },
   {
     icon: Clock,
-    title: 'Ventana de 24 horas',
-    description: 'Respuestas dentro de la ventana de sesión sin costo adicional.',
+    title: 'Historial unificado',
+    description: 'Todas las conversaciones de WhatsApp en un mismo panel junto al resto de canales.',
   },
 ];
 
 const templates = [
-  { name: 'Recordatorio de turno', description: '24hs antes del turno' },
-  { name: 'Confirmación', description: 'Al agendar' },
-  { name: 'Encuesta CSAT', description: 'Post-consulta' },
-  { name: 'Resultados', description: 'Estudios disponibles' },
+  { name: 'Confirmación de solicitud', description: 'Al recibir consulta' },
+  { name: 'Estado de caso', description: 'Actualización automática' },
+  { name: 'Encuesta CSAT', description: 'Post-atención' },
+  { name: 'Seguimiento de ticket', description: 'Ticketing activo' },
 ];
 
 export function WhatsAppIntegration() {
@@ -59,11 +59,11 @@ export function WhatsAppIntegration() {
               WhatsApp Business
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Tus pacientes ya están en WhatsApp
+              Tus clientes ya están en WhatsApp
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              El 98% de tus pacientes prefiere WhatsApp. 
-              Conecta tu clínica y atende donde ya están.
+              El 98% de tus clientes prefiere WhatsApp.
+              Conectá tus canales de atención y respondé donde ya están.
             </p>
           </motion.div>
         </div>
@@ -84,8 +84,8 @@ export function WhatsAppIntegration() {
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold text-sm">Clínica Sana</h4>
-                  <p className="text-green-100 text-xs">Contesta usualmente en minutos</p>
+                  <h4 className="text-white font-semibold text-sm">Empresa Demo</h4>
+                  <p className="text-green-100 text-xs">Responde usualmente en minutos</p>
                 </div>
               </div>
 
@@ -94,27 +94,27 @@ export function WhatsAppIntegration() {
                 <div className="flex items-start gap-2">
                   <div className="bg-gray-100 rounded-2xl rounded-bl-sm p-3 max-w-[80%]">
                     <p className="text-sm text-gray-700">
-                      Hola! Quería confirmar mi turno para mañana a las 10hs
+                      Hola! Quiero consultar el estado de mi pedido #45123
                     </p>
-                    <p className="text-xs text-gray-400">10:30</p>
+                    <p className="text-xs text-gray-400 mt-1">10:30</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2 flex-row-reverse">
                   <div className="bg-green-500 rounded-2xl rounded-br-sm p-3 max-w-[80%]">
                     <p className="text-sm text-white">
-                      Hola María! Tu turno está confirmado para mañana a las 10hs con el Dr. García. 
-                      Te recordamos llegar 15 min antes. 
-                      Cualquier duda, escribinos!
+                      ¡Hola! Tu pedido #45123 fue despachado hoy.
+                      Llega mañana antes de las 18hs.
+                      ¿Necesitás algo más?
                     </p>
-                    <p className="text-xs text-green-200">10:31 ✓✓</p>
+                    <p className="text-xs text-green-200 mt-1">10:31 ✓✓</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2">
                   <div className="bg-gray-100 rounded-2xl rounded-bl-sm p-3 max-w-[80%]">
                     <p className="text-sm text-gray-700">
-                      Gracias! Puedo llegar media hora antes?
+                      Genial, gracias! ¿Puedo cambiar la dirección?
                     </p>
                   </div>
                 </div>
@@ -122,7 +122,7 @@ export function WhatsAppIntegration() {
                 <div className="flex items-start gap-2 flex-row-reverse">
                   <div className="bg-green-500 rounded-2xl rounded-br-sm p-3 max-w-[80%]">
                     <p className="text-sm text-white">
-                      Claro! Queda a las 9:45hs. Te esperamos!
+                      Te derivo con un asesor para coordinar el cambio. Un momento.
                     </p>
                   </div>
                 </div>
@@ -133,13 +133,13 @@ export function WhatsAppIntegration() {
           {/* Features */}
           <div>
             <h3 className="text-2xl font-bold text-white mb-6">
-              WhatsApp integrado en tu plataforma
+              WhatsApp integrado en tu plataforma de atención
             </h3>
-            
+
             <div className="space-y-4">
               {features.map((feature) => (
-                <div key={feature.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div key={feature.title} className="flex items-start gap-4 group">
+                  <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-green-500/30 transition-colors">
                     <feature.icon className="w-5 h-5 text-green-400" />
                   </div>
                   <div>
@@ -166,13 +166,13 @@ export function WhatsAppIntegration() {
           viewport={{ once: true }}
         >
           <h3 className="text-center font-semibold text-white mb-8">
-            Notificaciones automáticas
+            Notificaciones automáticas por WhatsApp
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {templates.map((template) => (
               <div
                 key={template.name}
-                className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-center hover:border-green-500/50 transition-colors"
+                className="bg-gray-800/50 border border-gray-700 rounded-xl p-4 text-center hover:border-green-500/50 hover:bg-gray-800/80 transition-all cursor-default"
               >
                 <MessageCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
                 <p className="text-white font-medium text-sm">{template.name}</p>
@@ -189,10 +189,10 @@ export function WhatsAppIntegration() {
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 rounded-full">
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 rounded-full shadow-lg shadow-green-500/25">
             <Phone className="w-5 h-5 text-white" />
             <span className="text-white font-medium">
-              Configuramos tu WhatsApp sin costo adicional
+              Configuramos tu WhatsApp Business sin costo adicional
             </span>
           </div>
         </motion.div>

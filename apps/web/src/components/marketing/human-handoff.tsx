@@ -41,7 +41,7 @@ const features = [
 ];
 
 const workflow = [
-  { step: '1', title: 'Paciente no queda satisfecho', description: 'O solicita hablar con una persona' },
+  { step: '1', title: 'Cliente no queda satisfecho', description: 'O solicita hablar con una persona' },
   { step: '2', title: 'IA detecta la necesidad', description: 'Análisis en tiempo real' },
   { step: '3', title: 'Derivación automática', description: 'Al agente disponible' },
   { step: '4', title: 'Atención personalizada', description: 'Contexto completo' },
@@ -96,7 +96,7 @@ export function HumanHandoff() {
                 </div>
               </div>
               <div className="border-t pt-4">
-                <p className="text-sm text-gray-500">Paciente: "Prefiero hablar con un doctor"</p>
+                <p className="text-sm text-gray-500">Cliente: "¿Puedo hablar con una persona?"</p>
               </div>
             </div>
 
@@ -115,7 +115,7 @@ export function HumanHandoff() {
                 </div>
                 <div>
                   <h4 className="font-semibold">Agente Asignado</h4>
-                  <p className="text-xs text-primary-100">Dr. Martínez - Cardiología</p>
+                  <p className="text-xs text-primary-100">Laura Méndez — Atención al Cliente</p>
                 </div>
               </div>
               <div className="space-y-2">
@@ -125,11 +125,11 @@ export function HumanHandoff() {
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <CheckCircle className="w-4 h-4" />
-                  <span>Historial del paciente</span>
+                  <span>Historial del cliente</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <CheckCircle className="w-4 h-4" />
-                  <span>Interés en cardiología</span>
+                  <span>Intención detectada por IA</span>
                 </div>
               </div>
             </div>

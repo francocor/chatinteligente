@@ -1,28 +1,27 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { 
-  Clock, 
-  DollarSign, 
-  Heart, 
-  Users, 
-  TrendingUp, 
+import {
+  Clock,
+  DollarSign,
+  Heart,
+  Users,
+  TrendingUp,
   Shield,
   Calendar,
   MessageCircle,
   Star,
-  ArrowUpRight,
   CheckCircle
 } from 'lucide-react';
 
 const benefits = [
   {
-    category: 'Pacientes',
+    category: 'Clientes',
     items: [
       {
         icon: Clock,
         title: 'Respuesta inmediata 24/7',
-        description: 'Cada paciente recibe atención instantánea, incluso a las 3am o holidays.',
+        description: 'Cada cliente recibe atención instantánea, incluso a las 3am o días feriados.',
         metric: '2 seg',
         metricLabel: 'tiempo promedio de respuesta',
       },
@@ -31,31 +30,31 @@ const benefits = [
         title: 'Experiencia personalizada',
         description: 'El asistente recuerda preferencias y contexto, ofreciendo una atención cálida y efectiva.',
         metric: '94%',
-        metricLabel: 'satisfacción de pacientes',
+        metricLabel: 'satisfacción de clientes',
       },
       {
         icon: Calendar,
-        title: 'Gestión de turnos simplificada',
-        description: 'Reservas, reprogramaciones y cancelaciones automatizadas sin intervención del staff.',
+        title: 'Gestión de consultas simplificada',
+        description: 'Solicitudes, agendas y consultas automatizadas sin intervención del equipo.',
         metric: '78%',
-        metricLabel: 'de reservas automatizadas',
+        metricLabel: 'de consultas automatizadas',
       },
     ],
   },
   {
-    category: 'Equipo Médico',
+    category: 'Equipo de Atención',
     items: [
       {
         icon: Users,
         title: 'Reducción de carga operativa',
-        description: 'El equipo se enfoca en lo importante: la atención médica de calidad.',
+        description: 'El equipo se enfoca en lo importante: resolver los casos que realmente lo requieren.',
         metric: '60%',
         metricLabel: 'menos consultas repetitivas',
       },
       {
         icon: MessageCircle,
         title: 'Contexto completo',
-        description: 'Cada conversación llega con historial previo, evitando que el paciente repita su situación.',
+        description: 'Cada conversación llega con historial previo, evitando que el cliente repita su situación.',
         metric: '100%',
         metricLabel: 'de contexto disponible',
       },
@@ -81,7 +80,7 @@ const benefits = [
       {
         icon: Star,
         title: 'Mejora en reputación',
-        description: 'Pacientes satisfechos dejaron reseñas positivas y recomiendan la clínica.',
+        description: 'Clientes satisfechos dejan reseñas positivas y recomiendan el servicio.',
         metric: '4.8/5',
         metricLabel: 'puntuación promedio',
       },
@@ -118,11 +117,11 @@ export function Benefits() {
               Beneficios
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Impacto medible en tu clínica
+              Impacto medible en tu empresa
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Resultados concretos que transforman la operación, la experiencia del paciente 
-              y los indicadores de tu centro médico.
+              Resultados concretos que transforman la operación, la experiencia del cliente
+              y los indicadores de tu negocio.
             </p>
           </motion.div>
         </div>
@@ -134,7 +133,7 @@ export function Benefits() {
           viewport={{ once: true }}
           className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
         >
-          {keyMetrics.map((metric, index) => (
+          {keyMetrics.map((metric) => (
             <div
               key={metric.label}
               className="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl p-6 text-center text-white"
@@ -197,10 +196,10 @@ export function Benefits() {
           className="mt-16 bg-primary-50 rounded-2xl p-8 text-center"
         >
           <p className="text-lg text-primary-800 font-medium">
-            Estos resultados son basados en datos reales de clínicas que ya usan la plataforma.
+            Estos resultados son basados en datos reales de empresas que ya usan la plataforma.
           </p>
           <p className="text-primary-600 text-sm mt-2">
-            Los indicadores pueden variar según el tipo de clínica y volumen de pacientes.
+            Los indicadores pueden variar según el tipo de empresa y volumen de consultas.
           </p>
         </motion.div>
       </div>

@@ -37,7 +37,7 @@ const features = [
   { icon: Bell, title: 'Alertas', description: 'Configurables' },
   { icon: Link2, title: 'Webhooks', description: 'Integraciones externas' },
   { icon: FileText, title: 'CSAT', description: 'Encuestas post-chat' },
-  { icon: Calendar, title: 'Turnos', description: 'Gestión automática' },
+  { icon: Calendar, title: 'Agenda', description: 'Gestión automática' },
   { icon: Clock, title: 'Colas', description: 'Balanceo automático' },
   { icon: Building, title: 'Multi-empresa', description: 'Un panel para cada cliente' },
   { icon: FileSpreadsheet, title: 'Exportar', description: 'CSV, Excel, PDF' },

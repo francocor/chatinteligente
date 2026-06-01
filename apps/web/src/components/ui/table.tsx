@@ -187,7 +187,7 @@ interface DataTableProps<T = any> extends TableProps<T> {
 export function DataTable<T extends Record<string, any>>({
   pageSize = 10,
   currentPage = 1,
-  total = data?.length || 0,
+  total = 0,
   onPageChange,
   pageSizeOptions = [10, 25, 50, 100],
   onPageSizeChange,
@@ -354,7 +354,8 @@ interface ExportButtonProps {
   label?: string;
 }
 
-export function ExportTableButton({ data, filename = 'export', columns, format = ['csv'], label = 'Exportar' }: ExportButtonProps) {
+export function ExportTableButton({ data, filename = 'export', columns, format: formatProp = ['csv'], label = 'Exportar' }: ExportButtonProps) {
+  const format = Array.isArray(formatProp) ? formatProp : [formatProp];
   const handleExport = (exportFormat: ExportFormat) => {
     let content: string;
     let mimeType: string;

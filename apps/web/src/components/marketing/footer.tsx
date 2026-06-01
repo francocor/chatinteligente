@@ -17,7 +17,7 @@ export function CTA() {
             Transforma tu atención hoy
           </h2>
           <p className="text-lg text-primary-100 mb-8 max-w-2xl mx-auto">
-            Únete a las 500+ clínicas que ya están ofreciendo 
+            Únete a las 500+ empresas que ya están ofreciendo
             atención inteligente 24/7. Prueba gratis 14 días, sin compromiso.
           </p>
           
@@ -78,8 +78,8 @@ export function Footer() {
               <span className="text-xl font-bold text-white">Atención IA</span>
             </Link>
             <p className="text-gray-400 text-sm mb-6 max-w-xs">
-              La plataforma de atención al cliente impulsada por inteligencia artificial. 
-              Para clínicas, centros médicos y empresas.
+              La plataforma de atención al cliente impulsada por inteligencia artificial.
+              Para empresas de todos los rubros.
             </p>
             <div className="flex gap-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

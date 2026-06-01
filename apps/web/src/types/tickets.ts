@@ -192,10 +192,11 @@ export interface AlertCondition {
   field?: string;
   operator?: 'gt' | 'lt' | 'eq' | 'gte' | 'lte';
   value?: any;
+  threshold?: number;
 }
 
 export interface AlertAction {
-  type: 'notify' | 'create_ticket' | 'assign' | 'escalate';
+  type: 'notify' | 'notify_agents' | 'create_ticket' | 'assign' | 'escalate';
   config?: Record<string, any>;
 }
 
