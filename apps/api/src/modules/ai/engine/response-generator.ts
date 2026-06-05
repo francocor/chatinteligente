@@ -4,6 +4,7 @@ import {
   ChatResponse,
   IntentMatch,
   IntentType,
+  QuickReplyOption,
   ResponseSource,
   SentimentLabel,
   UrgencyLevel,
@@ -256,16 +257,14 @@ export class ResponseGenerator {
   ): Promise<any[]> {
     const where: any = {
       tenantId,
-      isActive: true,
-      status: { in: ['ACTIVE', 'REVIEW'] },
+      status: 'ACTIVE',
     };
 
     if (query && query.trim().length > 0) {
       where.OR = [
         { title: { contains: query, mode: 'insensitive' } },
         { content: { contains: query, mode: 'insensitive' } },
-        { keywords: { hasSome: query.toLowerCase().split(' ') } },
-        { variants: { has: { in: [query.toLowerCase()] } } },
+        { tags: { hasSome: query.toLowerCase().split(' ') } },
       ];
     }
 

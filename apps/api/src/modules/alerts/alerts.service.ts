@@ -9,13 +9,13 @@ export class AlertsService {
    async createAlert(tenantId: string, dto: CreateAlertDto): Promise<any> {
      return this.prisma.notification.create({
        data: {
-         tenant: { connect: { id: tenantId } },
-         type: dto.type as any,
-         urgency: dto.urgency as any,
+         tenantId,
+         type: dto.type,
+         urgency: dto.urgency,
          title: dto.title,
          message: dto.message,
          relatedConversationId: dto.relatedConversationId,
-       },
+       } as any,
      });
    }
 

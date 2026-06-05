@@ -154,6 +154,20 @@ export class KnowledgeService {
     });
   }
 
+  async searchKnowledge(tenantId: string, query: string): Promise<any[]> {
+    return this.prisma.knowledgeEntry.findMany({
+      where: {
+        tenantId,
+        status: 'ACTIVE',
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          { content: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      take: 5,
+    });
+  }
+
   async markHelpful(tenantId: string, id: string, helpful: boolean): Promise<any> {
     await this.findOne(tenantId, id);
 

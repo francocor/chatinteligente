@@ -8,11 +8,14 @@ import { ConversationsModule } from './modules/conversations/conversations.modul
 import { MessagesModule } from './modules/messages/messages.module';
 import { AgentsModule } from './modules/agents/agents.module';
 import { FlowsModule } from './modules/flows/flows.module';
-// import { AIModule } from './modules/ai/ai.module'; // DISABLED: TypeScript errors
-// import { AnalyticsModule } from './modules/analytics/analytics.module'; // DISABLED: TypeScript errors
-// import { AlertsModule } from './modules/alerts/alerts.module'; // DISABLED: TypeScript errors
+// import { AIModule } from './modules/ai/ai.module'; // pending: re-enable once TS errors in engine are confirmed fixed
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { AlertsModule } from './modules/alerts/alerts.module';
 import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { KnowledgeModule } from './modules/knowledge/knowledge.module';
+import { TicketsModule } from './modules/tickets/tickets.module';
+// import { WhatsAppModule } from './modules/whatsapp/whatsapp.module'; // DISABLED: 10 TS errors — fix in Fase 11
 
 @Module({
   imports: [
@@ -35,11 +38,14 @@ import { ChatModule } from './modules/chat/chat.module';
     MessagesModule,
     AgentsModule,
     FlowsModule,
-    // AIModule, // DISABLED
-    // AnalyticsModule, // DISABLED
-    // AlertsModule, // DISABLED
+    // AIModule, // pending re-enable after build confirms engine TS fixes
+    AnalyticsModule,
+    AlertsModule,
     WebhooksModule,
-    
+    KnowledgeModule,
+    TicketsModule,
+    // WhatsAppModule, // DISABLED — fix in Fase 11
+
     // Real-time chat
     ChatModule,
   ],
