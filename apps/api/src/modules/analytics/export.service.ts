@@ -222,6 +222,7 @@ export class ExportService {
         assignedAgent: {
           include: { user: true },
         },
+        _count: { select: { messages: true } },
       },
       orderBy: { createdAt: 'desc' },
       take: 10000,
@@ -243,7 +244,7 @@ export class ExportService {
       closedAt: c.closedAt,
       responseTime: c.responseTimeMs,
       resolutionTime: c.resolutionTimeMs,
-       messagesCount: c.messages?.length || 0,
+      messagesCount: c._count.messages,
       csatScore: c.csatScore,
       tags: c.tags || [],
     }));
@@ -428,12 +429,11 @@ export class ExportService {
   private async getKnowledgeData(tenantId: string): Promise<any[]> {
     const entries = await this.prisma.knowledgeEntry.findMany({
       where: { tenantId },
-      include: { category: true },
     });
 
     return entries.map(e => ({
       title: e.title,
-      category: e.category?.name || '',
+      category: e.category || '',
       status: e.status,
       views: e.views,
       searches: Math.floor(e.views * 0.5),

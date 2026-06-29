@@ -1,4 +1,5 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { 
   CreateWhatsAppConfigDto, 
@@ -70,7 +71,7 @@ export class WhatsAppService {
         webhookSecret,
         isActive: false,
         isVerified: false,
-        config: dto.config || {},
+        config: (dto.config ?? {}) as Prisma.InputJsonValue,
       },
     });
 
@@ -101,7 +102,10 @@ export class WhatsAppService {
     if (dto.accessToken) updateData.accessToken = dto.accessToken;
     if (dto.isActive !== undefined) updateData.isActive = dto.isActive;
     if (dto.config) {
-      updateData.config = { ...config.config, ...dto.config };
+      updateData.config = {
+        ...(config.config as Prisma.JsonObject),
+        ...dto.config,
+      } as Prisma.InputJsonValue;
     }
 
     const updated = await this.prisma.whatsAppConfig.update({
@@ -293,9 +297,9 @@ export class WhatsAppService {
     }
   }
 
-  verifyWebhook(tenantId: string, mode: string, token: string, challenge: string): { success: boolean; challenge?: string } {
-    const config = this.prisma.whatsAppConfig.findUnique({ where: { tenantId } });
-    
+  async verifyWebhook(tenantId: string, mode: string, token: string, challenge: string): Promise<{ success: boolean; challenge?: string }> {
+    const config = await this.prisma.whatsAppConfig.findUnique({ where: { tenantId } });
+
     if (!config) {
       return { success: false };
     }
@@ -464,7 +468,9 @@ export class WhatsAppService {
   private async handleIncomingMessages(tenantId: string, config: any, value: any): Promise<void> {
     const messages = value.messages || [];
     const contacts = value.contacts || [];
-    const contactMap = new Map(contacts.map((c: any) => [c.wa_id, c.profile?.name]));
+    const contactMap = new Map<string, string>(
+      contacts.map((c: any) => [c.wa_id, c.profile?.name]),
+    );
 
     for (const msg of messages) {
       const startTime = Date.now();
@@ -513,17 +519,18 @@ export class WhatsAppService {
             deliveredAt: new Date(),
             metadata: {
               rawMessage: msg,
-              contactName: contactMap.get(msg.from),
-            },
+              contactName: contactMap.get(msg.from) ?? null,
+            } as Prisma.InputJsonValue,
           },
         });
 
         if (!conversationId && contactId) {
           const settings = config.config as any;
-          
+
           const newConversation = await this.prisma.conversation.create({
             data: {
               tenantId,
+              conversationNumber: await this.getNextConversationNumber(tenantId),
               channel: 'WHATSAPP',
               contactId,
               status: 'ACTIVE',
@@ -783,6 +790,15 @@ export class WhatsAppService {
     } catch (error) {
       this.logger.error(`Failed to log WhatsApp event: ${error.message}`);
     }
+  }
+
+  private async getNextConversationNumber(tenantId: string): Promise<number> {
+    const last = await this.prisma.conversation.findFirst({
+      where: { tenantId },
+      orderBy: { conversationNumber: 'desc' },
+      select: { conversationNumber: true },
+    });
+    return (last?.conversationNumber ?? 0) + 1;
   }
 
   private generateVerifyToken(): string {

@@ -17,9 +17,17 @@ export class ConversationsService {
   constructor(private prisma: PrismaService) {}
 
    async create(tenantId: string, dto: CreateConversationDto): Promise<any> {
+      const lastConversation = await this.prisma.conversation.findFirst({
+        where: { tenantId },
+        orderBy: { conversationNumber: 'desc' },
+        select: { conversationNumber: true },
+      });
+      const conversationNumber = (lastConversation?.conversationNumber ?? 0) + 1;
+
       const conversation = await this.prisma.conversation.create({
         data: {
           tenantId,
+          conversationNumber,
           channel: (dto.channel || 'WEB') as any,
           userId: dto.userId,
           userName: dto.userName,

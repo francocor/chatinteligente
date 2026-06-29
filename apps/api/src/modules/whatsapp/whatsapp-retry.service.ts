@@ -40,7 +40,6 @@ export class WhatsAppRetryService {
   async retryMessage(messageId: string, tenantId: string): Promise<boolean> {
     const message = await this.prisma.whatsAppMessage.findUnique({
       where: { id: messageId },
-      include: { conversation: true },
     });
 
     if (!message) {
